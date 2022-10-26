@@ -53,3 +53,37 @@ class User:
 
     def signup(self):
         pass
+
+
+class Game:
+
+    def __init__(self):
+        self.rules = self._set_rules()
+        self.about = self._set-about()
+
+    def start(self):
+        pass
+
+    def show_main_menu(self):
+        pass
+
+    def show_rules(self):
+        pass
+
+    def show_about(self):
+        pass
+
+    def set_game_level(self, game_level):
+        self.level = game_level
+
+    def show_board(self):
+        pass
+
+    def get_user_input(self):
+        pass
+
+    def show_feedback_message(self):
+        pass
+
+    def end_game(self):
+        pass
