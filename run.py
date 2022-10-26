@@ -40,3 +40,16 @@ class UserBoard(Board):
 
     def reveal_cell(self):
         pass
+
+
+class User:
+
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+
+    def login(self):
+        pass
+
+    def signup(self):
+        pass
