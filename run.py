@@ -13,3 +13,20 @@ class Cell:
 
     def has_mine(self):
         pass
+
+
+class Board:
+
+    def _set_mines(self):
+        pass
+
+    def _build_cells(self):
+        pass
+
+    def __init__(self, col_size, row_size, mines_num):
+        self.col_size, self.row_size = col_size, row_size
+        self.mines_num = mines_num
+        self.cells = self._build_cells()
+
+    def show(self):
+        pass
