@@ -88,6 +88,9 @@ class Game:
 
     def run_game(self):
         level = self.get_game_level()
+        level_info = self._get_levels()[level]
+        board = Board(level_info['col'], level_info['row'],
+                      level_info['mines'])
 
     def show_rules(self):
         print(self._get_rules())
