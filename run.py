@@ -1,20 +1,3 @@
-class Cell:
-
-    def __init__(self, col_cor, row_cor):
-        self.col_cor = col_cor
-        self.row_cor = row_cor
-        self.is_mine = False
-
-    def get_neighbour_mines_num(self):
-        pass
-
-    def set_neighbour_mines_num(self):
-        pass
-
-    def has_mine(self):
-        pass
-
-
 class Board:
 
     def _set_mines(self):
@@ -57,21 +40,48 @@ class User:
 
 class Game:
 
+    def _set_rules(self):
+        return ""
+
+    def _set_about(self):
+        return ""
+
     def __init__(self):
         self.rules = self._set_rules()
-        self.about = self._set-about()
+        self.about = self._set_about()
 
     def start(self):
-        pass
+        print("Welcome to Minesweeper!")
+        self.show_main_menu()
+
+    def validate_menu_choice(self, menu_choice):
+        try:
+            menu_choice = int(menu_choice)
+            if menu_choice in [1, 2, 3]:
+                return menu_choice
+            else:
+                print("Invalid input, please select a number \
+                    from the shown menu only.")
+                self.show_main_menu()
+        except ValueError as e:
+            print("Invalid input, please use numbers only to select a menu \
+                item.")
+
+    def get_menu_choice(self):
+        menu_choice = input("Enter the number of your choice here:\n")
+        return self.validate_menu_choice(menu_choice)
 
     def show_main_menu(self):
-        pass
+        print("Main Menu\n1. Start Game\n2. Rules\n3. About")
 
     def show_rules(self):
         pass
 
     def show_about(self):
         pass
+
+    def get_game_level(self):
+        user_level = input("Enter the number of your choice here:\n")
 
     def set_game_level(self, game_level):
         self.level = game_level
@@ -87,3 +97,11 @@ class Game:
 
     def end_game(self):
         pass
+
+
+def main():
+    game = Game()
+    game.start()
+
+
+main()
