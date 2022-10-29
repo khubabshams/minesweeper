@@ -51,6 +51,12 @@ class Game:
                 2: {'name': 'Medium', 'mines': 6, 'col': 4, 'row': 4},
                 3: {'name': 'Hard', 'mines': 16, 'col': 6, 'row': 6}}
 
+    def _get_level_menu(self):
+        levels = self._get_levels()
+        lev_text = "\n".join([f"{lev}. {levels[lev]['name']} {levels[lev]['col']}x{levels[lev]['row']} ({levels[lev]['mines']} Mines)"
+                              for lev in levels])
+        return f"Levels:\n{lev_text}"
+
     def __init__(self):
         pass
 
@@ -62,17 +68,18 @@ class Game:
         int_input = int(input)
         return int_input in possible_values and int_input or False
 
-    def validate_menu_choice(self, menu_choice, possible_values, callback):
+    def validate_menu_choice(self, menu_choice, possible_values,
+                             callback_func):
         try:
             menu_choice = self._validate_int_input(menu_choice,
                                                    possible_values)
-            if not menu_choice:
-                print("Invalid input, please enter a number from the shown menu only.")
-                callback_func = getattr(self, callback)
-                callback_func()
-            return menu_choice
+            if menu_choice:
+                return menu_choice
+            print("Invalid input, please enter a number from the shown menu only.")
         except ValueError as e:
             print("Invalid input, please enter numbers only to select a menu item.")
+        failure_callback_func = getattr(self, callback_func)
+        failure_callback_func()
 
     def get_menu_choice(self):
         menu_choice = input("Enter the number of your choice here:\n")
@@ -101,10 +108,8 @@ class Game:
         self.exec_menu_choice(menu_choice)
 
     def get_game_level(self):
-        levels = self._get_levels()
-        lev_text = "\n".join([f"{lev}. {levels[lev]['name']} {levels[lev]['col']}x{levels[lev]['row']} ({levels[lev]['mines']} Mines)"
-                              for lev in levels])
-        print(f"Levels:\n{lev_text}")
+        level_menu_text = self._get_level_menu()
+        print(level_menu_text)
         user_level = input(
             "Enter the number of the level you want to play here:\n")
         return self.validate_menu_choice(user_level, [1, 2, 3],
