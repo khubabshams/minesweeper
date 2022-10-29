@@ -102,10 +102,9 @@ class Game:
 
     def get_game_level(self):
         levels = self._get_levels()
-        lev_text = [f"{lev}. {levels[lev]['name']} {levels[lev]['col']}x{levels[lev]['row']} ({levels[lev]['mines']} Mines)"
-                    for lev in levels].join("\n")
+        lev_text = "\n".join([f"{lev}. {levels[lev]['name']} {levels[lev]['col']}x{levels[lev]['row']} ({levels[lev]['mines']} Mines)"
+                              for lev in levels])
         print(f"Levels:\n{lev_text}")
-        # print("Levels: \n1. Easy 3x3 (3 Mines)\n2. Medium 4x4 (6 Mines)\n3. Hard 6x6 (16 Mines)")
         user_level = input(
             "Enter the number of the level you want to play here:\n")
         return self.validate_menu_choice(user_level, [1, 2, 3],
