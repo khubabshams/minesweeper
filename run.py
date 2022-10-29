@@ -46,6 +46,11 @@ class Game:
     def _get_about(self):
         return "Minesweeper:\na Command line version of Minesweeper game developed by Khubab Shams."
 
+    def _get_levels(self):
+        return {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
+                2: {'name': 'Medium', 'mines': 6, 'col': 4, 'row': 4},
+                3: {'name': 'Hard', 'mines': 16, 'col': 6, 'row': 6}}
+
     def __init__(self):
         pass
 
@@ -96,8 +101,13 @@ class Game:
         self.exec_menu_choice(menu_choice)
 
     def get_game_level(self):
-        print("Levels: \n1. Easy 3x3 (3 Mines)\n2. Medium 4x4 (6 Mines)\n3. Hard 6x6 (16 Mines)")
-        user_level = input("Enter the number of the level you want to play here:\n")
+        levels = self._get_levels()
+        lev_text = [f"{lev}. {levels[lev]['name']} {levels[lev]['col']}x{levels[lev]['row']} ({levels[lev]['mines']} Mines)"
+                    for lev in levels].join("\n")
+        print(f"Levels:\n{lev_text}")
+        # print("Levels: \n1. Easy 3x3 (3 Mines)\n2. Medium 4x4 (6 Mines)\n3. Hard 6x6 (16 Mines)")
+        user_level = input(
+            "Enter the number of the level you want to play here:\n")
         return self.validate_menu_choice(user_level, [1, 2, 3],
                                          "get_game_level")
 
