@@ -1,15 +1,33 @@
+import random as rnd
+
+
 class Board:
 
+    def _initiate_cells(self):
+        return [[0] * self.col_size] * self.row_size
+
+    def _get_random_cors(self):
+        return (rnd.randrange(self.col_size), rnd.randrange(self.row_size))
+
     def _set_mines(self):
-        pass
+        while len(self.mines) != self.mines_num:
+            rand_cors = self._get_random_cors()
+            if self.has_mine(rand_cors):
+                continue
+            self.mines.append(rand_cors)
 
     def _build_cells(self):
-        pass
+        self.cells = self._initiate_cells()
+        self._set_mines()
 
     def __init__(self, col_size, row_size, mines_num):
         self.col_size, self.row_size = col_size, row_size
         self.mines_num = mines_num
+        self.mines = []
         self.cells = self._build_cells()
+
+    def has_mine(self, cors):
+        return cors in self.mines
 
     def show(self):
         pass
@@ -117,9 +135,6 @@ class Game:
             "Enter the number of the level you want to play here:\n")
         return self.validate_menu_choice(user_level, [1, 2, 3],
                                          "get_game_level")
-
-    def set_game_level(self, game_level):
-        self.level = game_level
 
     def show_board(self):
         pass
