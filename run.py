@@ -40,48 +40,66 @@ class User:
 
 class Game:
 
-    def _set_rules(self):
-        return ""
+    def _get_rules(self):
+        return "Choosing a square which doesn't have a mine reveals the number of neighbouring squares containing mines. By a process of deduction, elimination and guesswork, this information can be used to work out where all the mines are."
 
-    def _set_about(self):
-        return ""
+    def _get_about(self):
+        return "Minesweeper:\na Command line version of Minesweeper game developed by Khubab Shams."
 
     def __init__(self):
-        self.rules = self._set_rules()
-        self.about = self._set_about()
+        pass
 
     def start(self):
         print("Welcome to Minesweeper!")
-        self.show_main_menu()
+        self.run_main_menu()
 
-    def validate_menu_choice(self, menu_choice):
+    def _validate_int_input(self, input, possible_values):
+        int_input = int(input)
+        return int_input in possible_values and int_input or False
+
+    def validate_menu_choice(self, menu_choice, possible_values, callback):
         try:
-            menu_choice = int(menu_choice)
-            if menu_choice in [1, 2, 3]:
-                return menu_choice
-            else:
-                print("Invalid input, please select a number \
-                    from the shown menu only.")
-                self.show_main_menu()
+            menu_choice = self._validate_int_input(menu_choice,
+                                                   possible_values)
+            if not menu_choice:
+                print("Invalid input, please enter a number from the shown menu only.")
+                callback_func = getattr(self, callback)
+                callback_func()
+            return menu_choice
         except ValueError as e:
-            print("Invalid input, please use numbers only to select a menu \
-                item.")
+            print("Invalid input, please enter numbers only to select a menu item.")
 
     def get_menu_choice(self):
         menu_choice = input("Enter the number of your choice here:\n")
-        return self.validate_menu_choice(menu_choice)
+        return self.validate_menu_choice(menu_choice, [1, 2, 3],
+                                         "run_main_menu")
 
-    def show_main_menu(self):
-        print("Main Menu\n1. Start Game\n2. Rules\n3. About")
+    def run_game(self):
+        level = self.get_game_level()
 
     def show_rules(self):
-        pass
+        print(self._get_rules())
+        self.run_main_menu()
 
     def show_about(self):
-        pass
+        print(self._get_about())
+        self.run_main_menu()
+
+    def exec_menu_choice(self, menu_choice):
+        menu_actions = {1: "run_game", 2: "show_rules", 3: "show_about"}
+        function = getattr(self, menu_actions.get(menu_choice))
+        function()
+
+    def run_main_menu(self):
+        print("Main Menu:\n1. Start Game\n2. Rules\n3. About")
+        menu_choice = self.get_menu_choice()
+        self.exec_menu_choice(menu_choice)
 
     def get_game_level(self):
-        user_level = input("Enter the number of your choice here:\n")
+        print("Levels: \n1. Easy 3x3 (3 Mines)\n2. Medium 4x4 (6 Mines)\n3. Hard 6x6 (16 Mines)")
+        user_level = input("Enter the number of the level you want to play here:\n")
+        return self.validate_menu_choice(user_level, [1, 2, 3],
+                                         "get_game_level")
 
     def set_game_level(self, game_level):
         self.level = game_level
