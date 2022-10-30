@@ -20,18 +20,30 @@ class Board:
     def _build_cells(self):
         self.cells = self._initiate_cells()
         self._set_mines()
+        print(self.mines)
 
     def __init__(self, col_size, row_size, mines_num):
         self.col_size, self.row_size = col_size, row_size
         self.mines_num = mines_num
         self.mines = []
+        self.revealed_cells = []
         self.cells = self._build_cells()
 
     def has_mine(self, cors):
         return cors in self.mines
 
-    def reveal_cell(self):
+    def get_neighbour_mines_num(self, cors):
         pass
+
+    def is_already_revealed(self, cors):
+        return cors in self.revealed_cells
+
+    def reveal_cell(self, cors):
+        if self.has_mine(cors):
+            return True
+        else:
+            self.revealed_cells.append(cors)
+            return False
 
     def show(self):
         pass
@@ -69,12 +81,9 @@ class Game:
                               for lev in levels])
         return f"Levels:\n{lev_text}"
 
-    def _initiate_boards(self, level):
-        level_info = self._get_levels()[level]
-        board = Board(level_info['col'], level_info['row'],
-                      level_info['mines'])
-        user_board = copy.deepcopy(board)
-        return board, user_board
+    def _get_position_max_value(self, position_type):
+        level_info = self._get_levels()[self.level]
+        return level_info['row'] if position_type == 'row' else level_info['col']
 
     def __init__(self):
         pass
@@ -85,29 +94,59 @@ class Game:
 
     def _validate_int_input(self, input, possible_values):
         int_input = int(input)
-        return int_input in possible_values and int_input or False
+        return int_input if int_input in possible_values else None
 
-    def validate_menu_choice(self, menu_choice, possible_values,
-                             callback_func):
+    def validate_number_input(self, input, possible_values,
+                              callback_func, arg=None):
         try:
-            menu_choice = self._validate_int_input(menu_choice,
-                                                   possible_values)
-            if menu_choice:
-                return menu_choice
-            print("Invalid input, please enter a number from the shown menu only.")
+            int_input = self._validate_int_input(input, possible_values)
+            if isinstance(int_input, int):
+                return int_input
+            print("Invalid input, please enter a number from the displayed choices only.")
         except ValueError as e:
-            print("Invalid input, please enter numbers only to select a menu item.")
+            print("Invalid input, please enter numbers only to select an item.")
         failure_callback_func = getattr(self, callback_func)
-        failure_callback_func()
+        failure_callback_func(arg)
 
     def get_menu_choice(self):
         menu_choice = input("Enter the number of your choice here:\n")
-        return self.validate_menu_choice(menu_choice, [1, 2, 3],
-                                         "run_main_menu")
+        return self.validate_number_input(menu_choice, [1, 2, 3],
+                                          "run_main_menu")
+
+    def initiate_boards(self):
+        level_info = self._get_levels()[self.level]
+        board = Board(level_info['col'], level_info['row'],
+                      level_info['mines'])
+        user_board = copy.deepcopy(board)
+        return board, user_board
+
+    def get_single_position(self, position_type):
+        position_input = input(
+            f"Enter the number of the {position_type} of the selected cell here:\n")
+        max = self._get_position_max_value(position_type)
+        print(list(range(max)))
+        return self.validate_number_input(position_input, list(range(max)),
+                                          "get_single_position", position_type)
+
+    def get_user_input(self):
+        row_position = self.get_single_position('row')
+        col_position = self.get_single_position('column')
+        return (row_position, col_position)
+
+    def validate_cors(self, cors, board, user_board):
+        if user_board.is_already_revealed(cors):
+            print("Entered cell position already revealed, please try new ones.")
+            self.play_round(board, user_board)
+
+    def play_round(self, board, user_board):
+        cors = self.get_user_input()
+        revealed_before = self.validate_cors(cors, board, user_board)
+        has_mine = user_board.reveal_cell(cors)
 
     def run_game(self):
-        level = self.get_game_level()
-        board, user_board = self._initiate_boards(level)
+        self.level = self.get_game_level()
+        board, user_board = self.initiate_boards()
+        result = self.play_round(board, user_board)
 
     def show_rules(self):
         print(self._get_rules())
@@ -132,13 +171,10 @@ class Game:
         print(level_menu_text)
         user_level = input(
             "Enter the number of the level you want to play here:\n")
-        return self.validate_menu_choice(user_level, [1, 2, 3],
-                                         "get_game_level")
+        return self.validate_number_input(user_level, [1, 2, 3],
+                                          "get_game_level")
 
     def show_board(self):
-        pass
-
-    def get_user_input(self):
         pass
 
     def show_feedback_message(self):
