@@ -1,4 +1,5 @@
 import random as rnd
+import copy
 
 
 class Board:
@@ -28,6 +29,9 @@ class Board:
 
     def has_mine(self, cors):
         return cors in self.mines
+
+    def reveal_cell(self):
+        pass
 
     def show(self):
         pass
@@ -65,6 +69,13 @@ class Game:
                               for lev in levels])
         return f"Levels:\n{lev_text}"
 
+    def _initiate_boards(self, level):
+        level_info = self._get_levels()[level]
+        board = Board(level_info['col'], level_info['row'],
+                      level_info['mines'])
+        user_board = copy.deepcopy(board)
+        return board, user_board
+
     def __init__(self):
         pass
 
@@ -96,9 +107,7 @@ class Game:
 
     def run_game(self):
         level = self.get_game_level()
-        level_info = self._get_levels()[level]
-        board = Board(level_info['col'], level_info['row'],
-                      level_info['mines'])
+        board, user_board = self._initiate_boards(level)
 
     def show_rules(self):
         print(self._get_rules())
