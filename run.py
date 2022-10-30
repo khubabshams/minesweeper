@@ -33,16 +33,6 @@ class Board:
         pass
 
 
-class UserBoard(Board):
-
-    def __init__(self, col_size, row_size, mines_num):
-        super(Board, self).__init__(col_size, row_size, mines_num)
-        self.cells_revealed = 0
-
-    def reveal_cell(self):
-        pass
-
-
 class User:
 
     def __init__(self, email, password):
