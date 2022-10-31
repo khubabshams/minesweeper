@@ -26,8 +26,8 @@ class Board:
         self.col_size, self.row_size = col_size, row_size
         self.mines_num = mines_num
         self.revealed_cells, self.mines = [], []
-        self.cells = self._build_cells()
         self.cells_neighbour_mines = {}
+        self._build_cells()
 
     def has_mine(self, cors):
         return cors in self.mines
@@ -37,9 +37,9 @@ class Board:
 
     def get_neighbour_cells_cors(self, cors):
         row, col = cors[0], cors[1]
-        return [(row-1, col-1), (row-1, col), (row-1, col+1),
-                (row, col-1), (row, col+1),
-                (row+1, col-1), (row+1, col+1)]
+        return [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1),
+                (row, col - 1), (row, col + 1),
+                (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
 
     def calculate_neighbour_mines_num(self, cors):
         neighbour_mines_num = sum([self.has_mine(cell_cors)
@@ -53,6 +53,10 @@ class Board:
 
     def is_already_revealed(self, cors):
         return cors in self.revealed_cells
+
+    def is_all_cells_revealed(self):
+        return len(self.revealed_cells) + self.mines_num ==\
+            self.col_size * self.row_size
 
     def update_board_data(self, cors):
         self.revealed_cells.append(cors)
@@ -167,7 +171,10 @@ class Game:
         if has_mine:
             print("GAME OVER")
         else:
-            self.play_round(board, user_board)
+            if user_board.is_all_cells_revealed():
+                print("YOU WIN!")
+            else:
+                self.play_round(board, user_board)
 
     def run_game(self):
         self.level = self.get_game_level()
