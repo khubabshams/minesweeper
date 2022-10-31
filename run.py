@@ -25,24 +25,44 @@ class Board:
     def __init__(self, col_size, row_size, mines_num):
         self.col_size, self.row_size = col_size, row_size
         self.mines_num = mines_num
-        self.mines = []
-        self.revealed_cells = []
+        self.revealed_cells, self.mines = [], []
         self.cells = self._build_cells()
+        self.cells_neighbour_mines = {}
 
     def has_mine(self, cors):
         return cors in self.mines
 
     def get_neighbour_mines_num(self, cors):
-        pass
+        return self.cells_neighbour_mines.get(cors, False)
+
+    def get_neighbour_cells_cors(self, cors):
+        row, col = cors[0], cors[1]
+        return [(row-1, col-1), (row-1, col), (row-1, col+1),
+                (row, col-1), (row, col+1),
+                (row+1, col-1), (row+1, col+1)]
+
+    def calculate_neighbour_mines_num(self, cors):
+        neighbour_mines_num = sum([self.has_mine(cell_cors)
+                                   for cell_cors in
+                                   self.get_neighbour_cells_cors(cors)])
+        return neighbour_mines_num
+
+    def set_neighbour_mines_num(self, cors):
+        neighbour_mines_num = self.calculate_neighbour_mines_num(cors)
+        self.cells_neighbour_mines.update({cors: neighbour_mines_num})
 
     def is_already_revealed(self, cors):
         return cors in self.revealed_cells
+
+    def update_board_data(self, cors):
+        self.revealed_cells.append(cors)
+        self.set_neighbour_mines_num(cors)
 
     def reveal_cell(self, cors):
         if self.has_mine(cors):
             return True
         else:
-            self.revealed_cells.append(cors)
+            self.update_board_data(cors)
             return False
 
     def show(self):
@@ -124,7 +144,6 @@ class Game:
         position_input = input(
             f"Enter the number of the {position_type} of the selected cell here:\n")
         max = self._get_position_max_value(position_type)
-        print(list(range(max)))
         return self.validate_number_input(position_input, list(range(max)),
                                           "get_single_position", position_type)
 
@@ -140,8 +159,15 @@ class Game:
 
     def play_round(self, board, user_board):
         cors = self.get_user_input()
-        revealed_before = self.validate_cors(cors, board, user_board)
+        self.validate_cors(cors, board, user_board)
         has_mine = user_board.reveal_cell(cors)
+        self.finsh_round(has_mine, board, user_board)
+
+    def finsh_round(self, has_mine, board, user_board):
+        if has_mine:
+            print("GAME OVER")
+        else:
+            self.play_round(board, user_board)
 
     def run_game(self):
         self.level = self.get_game_level()
