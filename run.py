@@ -143,7 +143,7 @@ class Game:
         except ValueError as e:
             print("Invalid input, please enter numbers only to select an item.")
         failure_callback_func = getattr(self, callback_func)
-        failure_callback_func(arg)
+        failure_callback_func(arg) if arg else failure_callback_func()
 
     def get_menu_choice(self):
         menu_choice = input("Enter the number of your choice here:\n")
