@@ -1,5 +1,7 @@
 import random as rnd
 import copy
+from rich.console import Console
+from rich.table import Table
 
 
 MENU_ACTIONS = {1: "run_game", 2: "show_rules", 3: "show_about"}
@@ -12,7 +14,7 @@ LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
 class Board:
 
     def _initiate_cells(self):
-        return [[0 for c in range(self.col_size)]
+        return [['0' for c in range(self.col_size)]
                 for r in range(self.row_size)]
 
     def _get_random_cors(self):
@@ -52,7 +54,7 @@ class Board:
 
     def set_neighbour_mines_num(self, cors):
         neighbour_mines_num = self.calculate_neighbour_mines_num(cors)
-        self.cells[cors[0]][cors[1]] = neighbour_mines_num
+        self.cells[cors[0]][cors[1]] = str(neighbour_mines_num)
 
     def is_already_revealed(self, cors):
         return cors in self.revealed_cells
@@ -72,8 +74,22 @@ class Board:
             self.update_board_data(cors)
             return False
 
+    def draw_board(self):
+        table = Table(title="Minesweeper")
+        table.add_column("-", style="cyan", no_wrap=True)
+        for indx in range(self.col_size):
+            table.add_column(str(indx), style="cyan", no_wrap=True)
+        row_indx = 0
+        for row in self.cells:
+            new_row = [str(row_indx)] + row
+            table.add_row(*new_row)
+            row_indx += 1
+        return table
+
     def show(self):
-        pass
+        table = self.draw_board()
+        console = Console()
+        console.print(table)
 
 
 class User:
@@ -159,6 +175,7 @@ class Game:
             self.play_round(board, user_board)
 
     def play_round(self, board, user_board):
+        user_board.show()
         cors = self.get_user_input()
         self.validate_cors(cors, board, user_board)
         has_mine = user_board.reveal_cell(cors)
