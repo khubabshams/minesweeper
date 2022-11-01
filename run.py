@@ -1,6 +1,7 @@
 import random as rnd
 import copy
 from rich.console import Console
+from rich.markdown import Markdown
 from rich.table import Table
 
 
@@ -75,20 +76,22 @@ class Board:
             return False
 
     def draw_board(self):
-        table = Table(title="Minesweeper")
-        table.add_column("-", style="cyan", no_wrap=True)
+        table = Table(title="[bold][#fc0004]Mine[#32fc00]sweeper",
+                      caption_justify="center", min_width=100, show_lines=True)
+        table.add_column("[green]-")
         for indx in range(self.col_size):
-            table.add_column(str(indx), style="cyan", no_wrap=True)
+            table.add_column("[green]"+str(indx))
         row_indx = 0
         for row in self.cells:
-            new_row = [str(row_indx)] + row
+            new_row = ["[bold][green]" + str(row_indx)] + row
             table.add_row(*new_row)
             row_indx += 1
         return table
 
     def show(self):
-        table = self.draw_board()
         console = Console()
+        console.print(Markdown("# Minesweeper"))
+        table = self.draw_board()
         console.print(table)
 
 
