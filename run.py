@@ -4,6 +4,10 @@ import copy
 
 MENU_ACTIONS = {1: "run_game", 2: "show_rules", 3: "show_about"}
 
+LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
+          2: {'name': 'Medium', 'mines': 6, 'col': 4, 'row': 4},
+          3: {'name': 'Hard', 'mines': 16, 'col': 6, 'row': 6}}
+
 
 class Board:
 
@@ -93,19 +97,13 @@ class Game:
     def _get_about(self):
         return "Minesweeper:\na Command line version of Minesweeper game developed by Khubab Shams."
 
-    def _get_levels(self):
-        return {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
-                2: {'name': 'Medium', 'mines': 6, 'col': 4, 'row': 4},
-                3: {'name': 'Hard', 'mines': 16, 'col': 6, 'row': 6}}
-
     def _get_level_menu(self):
-        levels = self._get_levels()
-        lev_text = "\n".join([f"{lev}. {levels[lev]['name']} {levels[lev]['col']}x{levels[lev]['row']} ({levels[lev]['mines']} Mines)"
-                              for lev in levels])
+        lev_text = "\n".join([f"{lev}. {LEVELS[lev]['name']} {LEVELS[lev]['col']}x{LEVELS[lev]['row']} ({LEVELS[lev]['mines']} Mines)"
+                              for lev in LEVELS])
         return f"Levels:\n{lev_text}"
 
     def _get_position_max_value(self, position_type):
-        level_info = self._get_levels()[self.level]
+        level_info = LEVELS[self.level]
         return level_info['row'] if position_type == 'row' else level_info['col']
 
     def __init__(self):
@@ -137,7 +135,7 @@ class Game:
                                           "run_main_menu")
 
     def initiate_boards(self):
-        level_info = self._get_levels()[self.level]
+        level_info = LEVELS[self.level]
         board = Board(level_info['col'], level_info['row'],
                       level_info['mines'])
         user_board = copy.deepcopy(board)
