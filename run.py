@@ -2,6 +2,9 @@ import random as rnd
 import copy
 
 
+MENU_ACTIONS = {1: "run_game", 2: "show_rules", 3: "show_about"}
+
+
 class Board:
 
     def _initiate_cells(self):
@@ -186,8 +189,7 @@ class Game:
         self.run_main_menu()
 
     def exec_menu_choice(self, menu_choice):
-        menu_actions = {1: "run_game", 2: "show_rules", 3: "show_about"}
-        function = getattr(self, menu_actions.get(menu_choice))
+        function = getattr(self, MENU_ACTIONS.get(menu_choice))
         function()
 
     def run_main_menu(self):
