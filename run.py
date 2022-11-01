@@ -5,7 +5,8 @@ import copy
 class Board:
 
     def _initiate_cells(self):
-        return [[0] * self.col_size] * self.row_size
+        return [[0 for c in range(self.col_size)]
+                for r in range(self.row_size)]
 
     def _get_random_cors(self):
         return (rnd.randrange(self.col_size), rnd.randrange(self.row_size))
@@ -26,14 +27,10 @@ class Board:
         self.col_size, self.row_size = col_size, row_size
         self.mines_num = mines_num
         self.revealed_cells, self.mines = [], []
-        self.cells_neighbour_mines = {}
         self._build_cells()
 
     def has_mine(self, cors):
         return cors in self.mines
-
-    def get_neighbour_mines_num(self, cors):
-        return self.cells_neighbour_mines.get(cors, False)
 
     def get_neighbour_cells_cors(self, cors):
         row, col = cors[0], cors[1]
@@ -42,14 +39,13 @@ class Board:
                 (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
 
     def calculate_neighbour_mines_num(self, cors):
-        neighbour_mines_num = sum([self.has_mine(cell_cors)
-                                   for cell_cors in
-                                   self.get_neighbour_cells_cors(cors)])
-        return neighbour_mines_num
+        return sum([self.has_mine(cell_cors)
+                    for cell_cors in
+                    self.get_neighbour_cells_cors(cors)])
 
     def set_neighbour_mines_num(self, cors):
         neighbour_mines_num = self.calculate_neighbour_mines_num(cors)
-        self.cells_neighbour_mines.update({cors: neighbour_mines_num})
+        self.cells[cors[0]][cors[1]] = neighbour_mines_num
 
     def is_already_revealed(self, cors):
         return cors in self.revealed_cells
