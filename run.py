@@ -16,7 +16,7 @@ LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
 class Board:
 
     def _initiate_cells(self):
-        return [['-' for col in range(self.col_size)]
+        return [['🔒' for col in range(self.col_size)]
                 for row in range(self.row_size)]
 
     def _get_random_cors(self):
@@ -83,21 +83,30 @@ class Board:
             self.update_board_data(cors)
             return False
 
-    def draw_board(self):
-        row_indx, style = 0, "[bold][blue]"
+    def _create_table(self, style):
         table = Table(title="", min_width=150, show_lines=True)
         table.add_column("#", width=1)
         for indx in range(self.col_size):
             table.add_column(f"{style}{indx}", width=3)
+        return table
+
+    def _add_rows(self, table, style):
+        row_indx = 0
         for row in self.cells:
             new_row = [f"{style}{row_indx}"] + row
             table.add_row(*new_row)
             row_indx += 1
         return table
 
+    def draw_board(self):
+        style = "[bold][blue]"
+        table = self._create_table(style)
+        table = self._add_rows(table, style)
+        return table
+
     def show(self):
         table = self.draw_board()
-        Console().print(table)
+        Console().print(table, justify="center")
 
 
 class User:
@@ -136,7 +145,7 @@ class Game:
 
     def formatted_menu(self, text):
         menu_text = Markdown(text)
-        Console().print(menu_text)
+        Console().print(menu_text, justify="center")
 
     def __init__(self):
         pass
