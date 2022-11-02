@@ -98,15 +98,31 @@ class Board:
             row_indx += 1
         return table
 
+    def _add_mine(self, row, col):
+        if self.has_mine((row, col)):
+            self.cells[row][col] = "💥"
+
+    def show_mines(self):
+        [[self._add_mine(row, col) for col in range(self.col_size)]
+         for row in range(self.row_size)]
+
     def draw_board(self):
         style = "[bold][blue]"
         table = self._create_table(style)
         table = self._add_rows(table, style)
         return table
 
+    def print_table(self, table):
+        Console().print(table, justify="center")
+
     def show(self):
         table = self.draw_board()
-        Console().print(table, justify="center")
+        self.print_table(table)
+
+    def show_real_board(self):
+        self.show_mines()
+        table = self.draw_board()
+        self.print_table(table)
 
 
 class User:
@@ -175,12 +191,11 @@ class Game:
         return self.validate_number_input(menu_choice, [1, 2, 3],
                                           "run_main_menu")
 
-    def initiate_boards(self):
+    def initiate_board(self):
         level_info = LEVELS[self.level]
         board = Board(level_info['col'], level_info['row'],
                       level_info['mines'])
-        user_board = copy.deepcopy(board)
-        return board, user_board
+        return board
 
     def get_single_position(self, position_type):
         position_input = input(
@@ -194,30 +209,31 @@ class Game:
         col_position = self.get_single_position('column')
         return (row_position, col_position)
 
-    def validate_cors(self, cors, board, user_board):
-        if user_board.is_already_revealed(cors):
+    def validate_cors(self, cors, board):
+        if board.is_already_revealed(cors):
             print("Entered cell position already revealed, please try new ones.")
-            self.play_round(board, user_board)
+            self.play_round(board)
 
-    def play_round(self, board, user_board):
-        user_board.show()
+    def play_round(self, board):
+        board.show()
         cors = self.get_user_input()
-        self.validate_cors(cors, board, user_board)
-        has_mine = user_board.reveal_cell(cors)
-        self.finsh_round(has_mine, board, user_board)
+        self.validate_cors(cors, board)
+        has_mine = board.reveal_cell(cors)
+        self.finsh_round(has_mine, board)
 
-    def finsh_round(self, has_mine, board, user_board):
+    def finsh_round(self, has_mine, board):
         if has_mine:
+            board.show_real_board()
             self.formatted_title("GAME OVER")
-        elif user_board.is_all_cells_revealed():
+        elif board.is_all_cells_revealed():
             self.formatted_title("YOU WIN!")
         else:
-            self.play_round(board, user_board)
+            self.play_round(board)
 
     def run_game(self):
         self.level = self.get_game_level()
-        board, user_board = self.initiate_boards()
-        result = self.play_round(board, user_board)
+        board = self.initiate_board()
+        result = self.play_round(board)
 
     def show_rules(self):
         print(self._get_rules())
