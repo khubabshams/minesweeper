@@ -85,7 +85,7 @@ class Board:
             return False
 
     def _create_table(self, style):
-        table = Table(title="", min_width=150, show_lines=True)
+        table = Table(title="", min_width=50, show_lines=True)
         table.add_column("#", width=1)
         for indx in range(self.col_size):
             table.add_column(f"{style}{indx}", width=3)
@@ -226,16 +226,22 @@ class Game:
     def finsh_round(self, has_mine, board):
         if has_mine:
             self.show_board(board, hide_mines=False)
-            self.formatted_title("GAME OVER")
-            self.restart_game()
+            self.end_game("GAME OVER")
         elif board.is_all_cells_revealed():
-            self.formatted_title("YOU WIN!")
+            self.end_game("YOU WIN!")
         else:
             self.play_round(board)
 
-    def restart_game(self):
+    def end_game(self, final_message):
+        self.formatted_title(final_message)
         time.sleep(5)
-        self.start()
+        self.run_replay_menu()
+
+    def run_replay_menu(self):
+        replay_menu = "# Play again:\n## 1. Yes\n## 2. No"
+        menu_choice = self.get_menu_choice(replay_menu, [1, 2],
+                                           "run_replay_menu")
+        self.start_game() if menu_choice == 1 else self.run_main_menu
 
     def initiate_game(self):
         self.level = self.get_game_level()
@@ -243,7 +249,7 @@ class Game:
 
     def start_game(self):
         board = self.initiate_board()
-        result = self.play_round(board)
+        self.play_round(board)
 
     def print_game_info(self, info):
         print(info)
