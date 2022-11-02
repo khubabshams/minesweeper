@@ -16,7 +16,7 @@ LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
 class Board:
 
     def _initiate_cells(self):
-        return [['0' for c in range(self.col_size)]
+        return [['-' for c in range(self.col_size)]
                 for r in range(self.row_size)]
 
     def _get_random_cors(self):
@@ -78,7 +78,7 @@ class Board:
 
     def draw_board(self):
         table = Table(title="", min_width=150, show_lines=True)
-        table.add_column("[green]-")
+        table.add_column("[green]#")
         for indx in range(self.col_size):
             table.add_column("[green]"+str(indx))
         row_indx = 0
