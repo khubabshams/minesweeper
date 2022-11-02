@@ -198,10 +198,10 @@ class Game:
 
     def finsh_round(self, has_mine, board, user_board):
         if has_mine:
-            self.formatted_print("GAME OVER")
+            self.formatted_title("GAME OVER")
         else:
             if user_board.is_all_cells_revealed():
-                self.formatted_print("YOU WIN!")
+                self.formatted_title("YOU WIN!")
             else:
                 self.play_round(board, user_board)
 
