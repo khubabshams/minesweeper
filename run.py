@@ -54,9 +54,15 @@ class Board:
                     for cell_cors in
                     self.get_neighbour_cells_cors(cors)])
 
+    def set_neighbour_mines_num_style(self, neighbour_mines_num):
+        color = "[red]" if neighbour_mines_num >= 3 else "[#f45f0e]" \
+            if neighbour_mines_num >= 1 else '[green]'
+        return f"[bold]{color}{neighbour_mines_num}"
+
     def set_neighbour_mines_num(self, cors):
         neighbour_mines_num = self.calculate_neighbour_mines_num(cors)
-        self.cells[cors[0]][cors[1]] = str(neighbour_mines_num)
+        self.cells[cors[0]][cors[1]] = self.set_neighbour_mines_num_style(
+            neighbour_mines_num)
 
     def is_already_revealed(self, cors):
         return cors in self.revealed_cells
@@ -77,13 +83,13 @@ class Board:
             return False
 
     def draw_board(self):
+        row_indx, style = 0, "[bold][blue]"
         table = Table(title="", min_width=150, show_lines=True)
-        table.add_column("[green]#")
+        table.add_column("#", width=1)
         for indx in range(self.col_size):
-            table.add_column("[green]"+str(indx))
-        row_indx = 0
+            table.add_column(f"{style}{indx}", width=3)
         for row in self.cells:
-            new_row = ["[bold][green]" + str(row_indx)] + row
+            new_row = [f"{style}{row_indx}"] + row
             table.add_row(*new_row)
             row_indx += 1
         return table
@@ -115,23 +121,27 @@ class Game:
         return "Minesweeper:\na Command line version of Minesweeper game developed by Khubab Shams."
 
     def _get_level_menu(self):
-        lev_text = "\n".join([f"{lev}. {LEVELS[lev]['name']} {LEVELS[lev]['col']}x{LEVELS[lev]['row']} ({LEVELS[lev]['mines']} Mines)"
+        lev_text = "\n".join([f"## {lev}. {LEVELS[lev]['name']} {LEVELS[lev]['col']}x{LEVELS[lev]['row']} ({LEVELS[lev]['mines']} Mines)"
                               for lev in LEVELS])
-        return f"Levels:\n{lev_text}"
+        return f"# Levels:\n{lev_text}"
 
     def _get_position_max_value(self, position_type):
         level_info = LEVELS[self.level]
         return level_info['row'] if position_type == 'row' else level_info['col']
 
-    def formatted_print(self, text):
+    def formatted_title(self, text):
         fig = Figlet(font='rectangles', justify="center", width=150)
-        print(colored(fig.renderText(text), on_color="on_white", attrs=['bold']))
+        print(colored(fig.renderText(text), attrs=['bold']))
+
+    def formatted_menu(self, text):
+        menu_text = Markdown(text)
+        Console().print(menu_text)
 
     def __init__(self):
         pass
 
     def start(self):
-        self.formatted_print("Welcome to Minesweeper!")
+        self.formatted_title("Welcome to Minesweeper!")
         self.run_main_menu()
 
     def _validate_int_input(self, input, possible_values):
@@ -213,13 +223,14 @@ class Game:
         function()
 
     def run_main_menu(self):
-        print("Main Menu:\n1. Start Game\n2. Rules\n3. About")
+        self.formatted_menu(
+            "# Main Menu:\n## 1. Start Game\n## 2. Rules\n## 3. About")
         menu_choice = self.get_menu_choice()
         self.exec_menu_choice(menu_choice)
 
     def get_game_level(self):
         level_menu_text = self._get_level_menu()
-        print(level_menu_text)
+        self.formatted_menu(level_menu_text)
         user_level = input(
             "Enter the number of the level you want to play here:\n")
         return self.validate_number_input(user_level, [1, 2, 3],
