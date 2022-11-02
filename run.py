@@ -16,23 +16,25 @@ LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
 class Board:
 
     def _initiate_cells(self):
-        return [['-' for c in range(self.col_size)]
-                for r in range(self.row_size)]
+        return [['-' for col in range(self.col_size)]
+                for row in range(self.row_size)]
 
     def _get_random_cors(self):
         return (rnd.randrange(self.col_size), rnd.randrange(self.row_size))
 
+    def _initiate_mine(self):
+        rand_cors = self._get_random_cors()
+        return rand_cors if not self.has_mine(rand_cors)\
+            else self._initiate_mines()
+
     def _set_mines(self):
         while len(self.mines) != self.mines_num:
-            rand_cors = self._get_random_cors()
-            if self.has_mine(rand_cors):
-                continue
-            self.mines.append(rand_cors)
+            mine_cors = self._initiate_mine()
+            self.mines.append(mine_cors)
 
     def _build_cells(self):
         self.cells = self._initiate_cells()
         self._set_mines()
-        print(self.mines)
 
     def __init__(self, col_size, row_size, mines_num):
         self.col_size, self.row_size = col_size, row_size
