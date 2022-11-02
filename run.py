@@ -25,7 +25,7 @@ class Board:
     def _initiate_mine(self):
         rand_cors = self._get_random_cors()
         return rand_cors if not self.has_mine(rand_cors)\
-            else self._initiate_mines()
+            else self._initiate_mine()
 
     def _set_mines(self):
         while len(self.mines) != self.mines_num:
@@ -45,8 +45,7 @@ class Board:
     def has_mine(self, cors):
         return cors in self.mines
 
-    def get_neighbour_cells_cors(self, cors):
-        row, col = cors[0], cors[1]
+    def get_neighbour_cells_cors(self, row, col):
         return [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1),
                 (row, col - 1), (row, col + 1),
                 (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
@@ -54,7 +53,7 @@ class Board:
     def calculate_neighbour_mines_num(self, cors):
         return sum([self.has_mine(cell_cors)
                     for cell_cors in
-                    self.get_neighbour_cells_cors(cors)])
+                    self.get_neighbour_cells_cors(cors[0], cors[1])])
 
     def set_neighbour_mines_num_style(self, neighbour_mines_num):
         color = "[red]" if neighbour_mines_num >= 3 else "[#f45f0e]" \
