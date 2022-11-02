@@ -5,8 +5,9 @@ from rich.markdown import Markdown
 from rich.table import Table
 from termcolor import colored
 from pyfiglet import Figlet
+import time
 
-MENU_ACTIONS = {1: "run_game", 2: "show_rules", 3: "show_about"}
+MENU_ACTIONS = {1: "initiate_game", 2: "show_rules", 3: "show_about"}
 
 LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
           2: {'name': 'Medium', 'mines': 6, 'col': 4, 'row': 4},
@@ -166,7 +167,7 @@ class Game:
     def __init__(self):
         pass
 
-    def start(self):
+    def run(self):
         self.formatted_title("Welcome to Minesweeper!")
         self.run_main_menu()
 
@@ -186,10 +187,11 @@ class Game:
         failure_callback_func = getattr(self, callback_func)
         failure_callback_func(arg) if arg else failure_callback_func()
 
-    def get_menu_choice(self):
+    def get_menu_choice(self, menu_text, possible_values, callback_func):
+        self.formatted_menu(menu_text)
         menu_choice = input("Enter the number of your choice here:\n")
-        return self.validate_number_input(menu_choice, [1, 2, 3],
-                                          "run_main_menu")
+        return self.validate_number_input(menu_choice, possible_values,
+                                          callback_func)
 
     def initiate_board(self):
         level_info = LEVELS[self.level]
@@ -225,55 +227,54 @@ class Game:
         if has_mine:
             board.show_real_board()
             self.formatted_title("GAME OVER")
+            self.restart_game()
         elif board.is_all_cells_revealed():
             self.formatted_title("YOU WIN!")
         else:
             self.play_round(board)
 
-    def run_game(self):
+    def restart_game(self):
+        time.sleep(5)
+        self.start()
+
+    def initiate_game(self):
         self.level = self.get_game_level()
+        self.start_game()
+
+    def start_game(self):
         board = self.initiate_board()
         result = self.play_round(board)
 
-    def show_rules(self):
-        print(self._get_rules())
+    def print_game_info(self, info):
+        print(info)
+        time.sleep(7)
         self.run_main_menu()
 
+    def show_rules(self):
+        self.print_game_info(self._get_rules())
+
     def show_about(self):
-        print(self._get_about())
-        self.run_main_menu()
+        self.print_game_info(self._get_about())
 
     def exec_menu_choice(self, menu_choice):
         function = getattr(self, MENU_ACTIONS.get(menu_choice))
         function()
 
     def run_main_menu(self):
-        self.formatted_menu(
-            "# Main Menu:\n## 1. Start Game\n## 2. Rules\n## 3. About")
-        menu_choice = self.get_menu_choice()
+        main_menu = "# Main Menu:\n## 1. Start Game\n## 2. Rules\n## 3. About"
+        menu_choice = self.get_menu_choice(main_menu, [1, 2, 3],
+                                           "run_main_menu")
         self.exec_menu_choice(menu_choice)
 
     def get_game_level(self):
         level_menu_text = self._get_level_menu()
-        self.formatted_menu(level_menu_text)
-        user_level = input(
-            "Enter the number of the level you want to play here:\n")
-        return self.validate_number_input(user_level, [1, 2, 3],
-                                          "get_game_level")
-
-    def show_board(self):
-        pass
-
-    def show_feedback_message(self):
-        pass
-
-    def end_game(self):
-        pass
+        return self.get_menu_choice(level_menu_text, [1, 2, 3],
+                                    "get_game_level")
 
 
 def main():
     game = Game()
-    game.start()
+    game.run()
 
 
 main()
