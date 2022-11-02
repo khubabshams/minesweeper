@@ -3,7 +3,8 @@ import copy
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.table import Table
-
+from termcolor import colored
+from pyfiglet import Figlet
 
 MENU_ACTIONS = {1: "run_game", 2: "show_rules", 3: "show_about"}
 
@@ -76,8 +77,7 @@ class Board:
             return False
 
     def draw_board(self):
-        table = Table(title="[bold][#fc0004]Mine[#32fc00]sweeper",
-                      caption_justify="center", min_width=100, show_lines=True)
+        table = Table(title="", min_width=150, show_lines=True)
         table.add_column("[green]-")
         for indx in range(self.col_size):
             table.add_column("[green]"+str(indx))
@@ -89,10 +89,8 @@ class Board:
         return table
 
     def show(self):
-        console = Console()
-        console.print(Markdown("# Minesweeper"))
         table = self.draw_board()
-        console.print(table)
+        Console().print(table)
 
 
 class User:
@@ -125,11 +123,15 @@ class Game:
         level_info = LEVELS[self.level]
         return level_info['row'] if position_type == 'row' else level_info['col']
 
+    def formatted_print(self, text):
+        fig = Figlet(font='rectangles', justify="center", width=150)
+        print(colored(fig.renderText(text), on_color="on_white", attrs=['bold']))
+
     def __init__(self):
         pass
 
     def start(self):
-        print("Welcome to Minesweeper!")
+        self.formatted_print("Welcome to Minesweeper!")
         self.run_main_menu()
 
     def _validate_int_input(self, input, possible_values):
@@ -186,10 +188,10 @@ class Game:
 
     def finsh_round(self, has_mine, board, user_board):
         if has_mine:
-            print("GAME OVER")
+            self.formatted_print("GAME OVER")
         else:
             if user_board.is_all_cells_revealed():
-                print("YOU WIN!")
+                self.formatted_print("YOU WIN!")
             else:
                 self.play_round(board, user_board)
 
