@@ -241,7 +241,7 @@ class Game:
         replay_menu = "# Play again:\n## 1. Yes\n## 2. No"
         menu_choice = self.get_menu_choice(replay_menu, [1, 2],
                                            "run_replay_menu")
-        self.start_game() if menu_choice == 1 else self.run_main_menu
+        self.start_game() if menu_choice == 1 else self.run_main_menu()
 
     def initiate_game(self):
         self.level = self.get_game_level()
