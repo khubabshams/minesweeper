@@ -128,9 +128,11 @@ class Board:
 
 class User:
 
-    def __init__(self, email, password):
-        self.email = email
-        self.password = password
+    def __init__(self):
+        pass
+
+    def authenticate(self, email, password):
+        pass
 
     def login(self):
         pass
@@ -169,6 +171,7 @@ class Game:
 
     def run(self):
         self.formatted_title("Welcome to Minesweeper!")
+        self.process_user_login()
         self.run_main_menu()
 
     def _validate_int_input(self, input, possible_values):
@@ -238,8 +241,7 @@ class Game:
         self.run_replay_menu()
 
     def run_replay_menu(self):
-        replay_menu = "# Play again:\n## 1. Yes\n## 2. No"
-        menu_choice = self.get_menu_choice(replay_menu, [1, 2],
+        menu_choice = self.get_menu_choice("# Play again?\n## 1. Yes\n## 2. No", [1, 2],
                                            "run_replay_menu")
         self.start_game() if menu_choice == 1 else self.run_main_menu()
 
@@ -250,6 +252,11 @@ class Game:
     def start_game(self):
         board = self.initiate_board()
         self.play_round(board)
+
+    def process_user_login(self):
+        menu_choice = self.get_menu_choice("# Have account?\n## 1. Yes, we will ask you to sign in\n## 2. No, you can signup to have one",
+                                           [1, 2], "process_user_login")
+        self.user = User().login() if menu_choice == 1 else User().signup()
 
     def print_game_info(self, info):
         print(info)
