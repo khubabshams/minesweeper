@@ -199,11 +199,10 @@ class Game:
     def finsh_round(self, has_mine, board, user_board):
         if has_mine:
             self.formatted_title("GAME OVER")
+        elif user_board.is_all_cells_revealed():
+            self.formatted_title("YOU WIN!")
         else:
-            if user_board.is_all_cells_revealed():
-                self.formatted_title("YOU WIN!")
-            else:
-                self.play_round(board, user_board)
+            self.play_round(board, user_board)
 
     def run_game(self):
         self.level = self.get_game_level()
