@@ -217,7 +217,7 @@ class Game:
             self.play_round(board)
 
     def play_round(self, board):
-        board.show()
+        self.show_board(board)
         cors = self.get_user_input()
         self.validate_cors(cors, board)
         has_mine = board.reveal_cell(cors)
@@ -225,7 +225,7 @@ class Game:
 
     def finsh_round(self, has_mine, board):
         if has_mine:
-            board.show_real_board()
+            self.show_board(board, hide_mines=False)
             self.formatted_title("GAME OVER")
             self.restart_game()
         elif board.is_all_cells_revealed():
@@ -255,6 +255,12 @@ class Game:
 
     def show_about(self):
         self.print_game_info(self._get_about())
+
+    def show_board(self, board, hide_mines=True):
+        if hide_mines:
+            board.show()
+        else:
+            board.show_real_board()
 
     def exec_menu_choice(self, menu_choice):
         function = getattr(self, MENU_ACTIONS.get(menu_choice))
