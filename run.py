@@ -7,11 +7,29 @@ from termcolor import colored
 from pyfiglet import Figlet
 import time
 
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+from getpass import getpass
+
 MENU_ACTIONS = {1: "initiate_game", 2: "show_rules", 3: "show_about"}
 
 LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
           2: {'name': 'Medium', 'mines': 6, 'col': 4, 'row': 4},
           3: {'name': 'Hard', 'mines': 16, 'col': 6, 'row': 6}}
+
+
+def print_colord_message(message, color):
+    print(colored(message, color))
+
+
+def print_failure_message(error_message):
+    print_colord_message(error_message, 'red')
+
+
+def print_success_message(success_message):
+    print_colord_message(success_message, 'green')
 
 
 class Board:
@@ -129,16 +147,66 @@ class Board:
 class User:
 
     def __init__(self):
-        pass
+        cred = credentials.Certificate("serviceAccountKey.json")
+        firebase_admin.initialize_app(cred)
+        self.firestore_db = firestore.client()
+
+    def get_firestore_collection(self):
+        return self.firestore_db.collection(u'GameUsers')
+
+    def _set_user_data(self, user_data):
+        self.email = user_data.get('email')
+        self.password = user_data.get('password')
+        self.username = user_data.get('username')
+
+    def _authentication_response(self, user_data):
+        if not user_data:
+            print_failure_message(
+                "Entered email or passowrd is not valid please try again.")
+            self.login()
+        self._set_user_data(user_data)
+        print_success_message(
+            f"Hi {user_data.get('username')}, enjoy playing ...\n")
+        time.sleep(2)
 
     def authenticate(self, email, password):
-        pass
+        print("Getting things done ...")
+        firestore_collection = self.get_firestore_collection()
+        docs = firestore_collection.where(u'email', u'==', email).\
+            where(u'key', u'==', password).get()
+        print("------- email ",email,password)
+        print("-------> list(docs)",len(list(docs)),[doc.to_dict() for doc in docs])
+        user_data = len(list(docs)) >= 1 and list(docs)[0].to_dict() or False
+        self._authentication_response(user_data)
+
+    def _validate_email(self, email):
+        # todo validate
+        return email
+
+    def _validate_password(self, password):
+        # todo validate
+        return password
+
+    def _get_email(self):
+        email = input("Enter your email here:\n")
+        return self._validate_email(email)
+
+    def _get_password(self, confirm=False):
+        confirmation = confirm and " confirmation" or ""
+        password = getpass(prompt=f"Enter your password{confirmation} here (hidden characters):")
+        return self._validate_password(password)
 
     def login(self):
-        pass
+        email = self._get_email()
+        password = self._get_password()
+        self.authenticate(email, password)
+        return self
 
     def signup(self):
-        pass
+        email = self._get_email()
+        password = self._get_password()
+        self.authenticate(email, password)
+        return self
 
 
 class Game:
