@@ -1,5 +1,4 @@
 import random as rnd
-import copy
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.table import Table
@@ -174,10 +173,8 @@ class User:
         firestore_collection = self.get_firestore_collection()
         docs = firestore_collection.where(u'email', u'==', email).\
             where(u'key', u'==', password).get()
-        print("------- email ",email,password)
-        print("-------> list(docs)",len(list(docs)),[doc.to_dict() for doc in docs])
-        user_data = len(list(docs)) >= 1 and list(docs)[0].to_dict() or False
-        self._authentication_response(user_data)
+        user_record = docs and docs[0].to_dict() or False
+        self._authentication_response(user_record)
 
     def _validate_email(self, email):
         # todo validate
@@ -200,13 +197,11 @@ class User:
         email = self._get_email()
         password = self._get_password()
         self.authenticate(email, password)
-        return self
 
     def signup(self):
         email = self._get_email()
         password = self._get_password()
         self.authenticate(email, password)
-        return self
 
 
 class Game:
@@ -324,7 +319,8 @@ class Game:
     def process_user_login(self):
         menu_choice = self.get_menu_choice("# Have account?\n## 1. Yes, we will ask you to sign in\n## 2. No, you can signup to have one",
                                            [1, 2], "process_user_login")
-        self.user = User().login() if menu_choice == 1 else User().signup()
+        self.user = User()
+        self.user.login() if menu_choice == 1 else User().signup()
 
     def print_game_info(self, info):
         print(info)
