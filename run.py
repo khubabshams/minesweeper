@@ -6,6 +6,7 @@ from termcolor import colored
 from pyfiglet import Figlet
 import time
 import re
+import bcrypt
 
 import firebase_admin
 from firebase_admin import credentials
@@ -164,21 +165,27 @@ class User:
         self.username = user_data.get('username')
 
     def _authentication_response(self, user_data):
-        if not user_data:
-            print_failure_message(
-                "Wrong email or passowrd, please try again.")
-            self.login()
         self._set_user_data(user_data)
         print_success_message(
             f"Hi {user_data.get('username')}, enjoy playing ...\n")
-        time.sleep(2)
+        time.sleep(1)
+
+    def _verify_user_record(self, docs, password):
+        user_record = docs and docs[0].to_dict() or False
+        verified_password = user_record and bcrypt.\
+            checkpw(password.encode('utf-8'), user_record["key"]) or False
+        if not user_record or not verified_password:
+            print_failure_message(
+                "Wrong email or password, please try again.")
+            self.login()
+        return user_record
 
     def authenticate(self, email, password):
         print("Getting things done ...")
         firestore_collection = self.get_firestore_collection()
         docs = firestore_collection.where(u'email', u'==', email).\
-            where(u'key', u'==', password).limit(1).get()
-        user_record = docs and docs[0].to_dict() or False
+            limit(1).get()
+        user_record = self._verify_user_record(docs, password)
         self._authentication_response(user_record)
 
     def _is_email_registered(self, email):
@@ -195,6 +202,10 @@ class User:
         else:
             print_failure_message("Please enter a valid email")
         return self._get_email()
+
+    def _get_hashed_password(self, password):
+        return bcrypt.hashpw(password.encode('utf-8'),
+                             bcrypt.gensalt(rounds=10))
 
     def _validate_username(self, name):
         if re.search(CHAR_START_REGEX, name):
@@ -215,7 +226,7 @@ class User:
     def _validate_confirmed_password(self, password, password_confirm):
         if password != password_confirm:
             print_failure_message(
-                "Confirm passowrd doesn't match entered password.")
+                "Confirm password doesn't match entered password.")
             return self._get_confirmed_password()
         else:
             return password
@@ -224,15 +235,16 @@ class User:
         name = input("Enter your name here:\n")
         return self._validate_username(name)
 
-    def _get_email(self):
+    def _get_email(self, validate=True):
         email = input("Enter your email here:\n")
-        return self._validate_email(email)
+        return validate and self._validate_email(email) or email
 
-    def _get_password(self, confirm=False):
+    def _get_password(self, confirm=False, validate=True):
         confirmation = confirm and " confirmation" or ""
         password = getpass(
             prompt=f"Enter your password{confirmation} here (hidden characters):")
-        return self._validate_password(password, confirm)
+        return validate and self._validate_password(password, confirm) \
+            or password
 
     def _get_confirmed_password(self):
         password = self._get_password()
@@ -240,18 +252,19 @@ class User:
         return self._validate_confirmed_password(password, password_confirm)
 
     def _do_signup(self, username, email, password):
+        hashed_password = self._get_hashed_password(password)
         user_data = {
             u'username': username,
             u'email': email,
-            u'key': password
+            u'key': hashed_password
         }
         firestore_collection = self.get_firestore_collection()
         _, doc_ref = firestore_collection.add(user_data)
         return doc_ref
 
     def login(self):
-        email = self._get_email()
-        password = self._get_password()
+        email = self._get_email(validate=False)
+        password = self._get_password(validate=False)
         self.authenticate(email, password)
 
     def signup(self):
@@ -288,7 +301,7 @@ class Game:
         Console().print(menu_text, justify="center")
 
     def __init__(self):
-        pass
+        self.user = User()
 
     def run(self):
         self.formatted_title("Welcome to Minesweeper!")
@@ -379,7 +392,6 @@ class Game:
         try:
             menu_choice = self.get_menu_choice("# Have account?\n## 1. Yes, we will ask you to sign in\n## 2. No, you can signup to have one",
                                                [1, 2], "process_user_login")
-            self.user = User()
             self.user.login() if menu_choice == 1 else self.user.signup()
         except Exception as e:
             print("------------>> e ", e)
