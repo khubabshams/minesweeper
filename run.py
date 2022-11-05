@@ -394,7 +394,6 @@ class Game:
                                                [1, 2], "process_user_login")
             self.user.login() if menu_choice == 1 else self.user.signup()
         except Exception as e:
-            print("------------>> e ", e)
             print_failure_message(
                 "an Error accured during the authentication process, please try again")
             self.process_user_login()
