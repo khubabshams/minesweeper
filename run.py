@@ -5,6 +5,7 @@ from rich.table import Table
 from termcolor import colored
 from pyfiglet import Figlet
 import time
+import re
 
 import firebase_admin
 from firebase_admin import credentials
@@ -17,6 +18,10 @@ MENU_ACTIONS = {1: "initiate_game", 2: "show_rules", 3: "show_about"}
 LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
           2: {'name': 'Medium', 'mines': 6, 'col': 4, 'row': 4},
           3: {'name': 'Hard', 'mines': 16, 'col': 6, 'row': 6}}
+
+EMAIL_REGEX = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+CHAR_START_REGEX = '^[a-zA-Z]'
+PASSWORD_LENGTH = 8
 
 
 def print_colord_message(message, color):
@@ -161,7 +166,7 @@ class User:
     def _authentication_response(self, user_data):
         if not user_data:
             print_failure_message(
-                "Entered email or passowrd is not valid please try again.")
+                "Wrong email or passowrd, please try again.")
             self.login()
         self._set_user_data(user_data)
         print_success_message(
@@ -172,17 +177,52 @@ class User:
         print("Getting things done ...")
         firestore_collection = self.get_firestore_collection()
         docs = firestore_collection.where(u'email', u'==', email).\
-            where(u'key', u'==', password).get()
+            where(u'key', u'==', password).limit(1).get()
         user_record = docs and docs[0].to_dict() or False
         self._authentication_response(user_record)
 
-    def _validate_email(self, email):
-        # todo validate
-        return email
+    def _is_email_registered(self, email):
+        docs = self.get_firestore_collection().\
+            where(u'email', u'==', email).limit(1).get()
+        return docs and docs[0].to_dict() and True or False
 
-    def _validate_password(self, password):
-        # todo validate
-        return password
+    def _validate_email(self, email):
+        if re.search(EMAIL_REGEX, email):
+            if not self._is_email_registered(email):
+                return email
+            print_failure_message(
+                "Email already exists, please use a different email")
+        else:
+            print_failure_message("Please enter a valid email")
+        return self._get_email()
+
+    def _validate_username(self, name):
+        if re.search(CHAR_START_REGEX, name):
+            return name
+        print_failure_message("Name must start with a letter")
+        return self._get_username()
+
+    def _validate_password(self, password, confirm=False):
+        if re.search(CHAR_START_REGEX, password):
+            if len(password) >= PASSWORD_LENGTH:
+                return password
+            print_failure_message(
+                f"Password must be a minimum of {PASSWORD_LENGTH} characters")
+        else:
+            print_failure_message("Password must start with a letter")
+        return self._get_password(confirm)
+
+    def _validate_confirmed_password(self, password, password_confirm):
+        if password != password_confirm:
+            print_failure_message(
+                "Confirm passowrd doesn't match entered password.")
+            return self._get_confirmed_password()
+        else:
+            return password
+
+    def _get_username(self):
+        name = input("Enter your name here:\n")
+        return self._validate_username(name)
 
     def _get_email(self):
         email = input("Enter your email here:\n")
@@ -190,8 +230,24 @@ class User:
 
     def _get_password(self, confirm=False):
         confirmation = confirm and " confirmation" or ""
-        password = getpass(prompt=f"Enter your password{confirmation} here (hidden characters):")
-        return self._validate_password(password)
+        password = getpass(
+            prompt=f"Enter your password{confirmation} here (hidden characters):")
+        return self._validate_password(password, confirm)
+
+    def _get_confirmed_password(self):
+        password = self._get_password()
+        password_confirm = self._get_password(confirm=True)
+        return self._validate_confirmed_password(password, password_confirm)
+
+    def _do_signup(self, username, email, password):
+        user_data = {
+            u'username': username,
+            u'email': email,
+            u'key': password
+        }
+        firestore_collection = self.get_firestore_collection()
+        _, doc_ref = firestore_collection.add(user_data)
+        return doc_ref
 
     def login(self):
         email = self._get_email()
@@ -199,8 +255,10 @@ class User:
         self.authenticate(email, password)
 
     def signup(self):
+        username = self._get_username()
         email = self._get_email()
-        password = self._get_password()
+        password = self._get_confirmed_password()
+        doc_ref = self._do_signup(username, email, password)
         self.authenticate(email, password)
 
 
@@ -234,6 +292,7 @@ class Game:
 
     def run(self):
         self.formatted_title("Welcome to Minesweeper!")
+        time.sleep(1)
         self.process_user_login()
         self.run_main_menu()
 
@@ -317,10 +376,16 @@ class Game:
         self.play_round(board)
 
     def process_user_login(self):
-        menu_choice = self.get_menu_choice("# Have account?\n## 1. Yes, we will ask you to sign in\n## 2. No, you can signup to have one",
-                                           [1, 2], "process_user_login")
-        self.user = User()
-        self.user.login() if menu_choice == 1 else User().signup()
+        try:
+            menu_choice = self.get_menu_choice("# Have account?\n## 1. Yes, we will ask you to sign in\n## 2. No, you can signup to have one",
+                                               [1, 2], "process_user_login")
+            self.user = User()
+            self.user.login() if menu_choice == 1 else self.user.signup()
+        except Exception as e:
+            print("------------>> e ", e)
+            print_failure_message(
+                "an Error accured during the authentication process, please try again")
+            self.process_user_login()
 
     def print_game_info(self, info):
         print(info)
