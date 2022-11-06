@@ -183,7 +183,7 @@ class User(FeedbackMixin):
             checkpw(password.encode('utf-8'), user_record["key"]) or False
         if not user_record or not verified_password:
             self.print_failure_message(
-                "Wrong email or password, please try again.")
+                "Wrong email or password, please try again")
             self.login()
         return user_record
 
@@ -233,7 +233,7 @@ class User(FeedbackMixin):
     def _validate_confirmed_password(self, password, password_confirm):
         if password != password_confirm:
             self.print_failure_message(
-                "Confirm password doesn't match entered password.")
+                "Confirm password doesn't match entered password")
             return self._get_confirmed_password()
         else:
             return password
@@ -319,10 +319,10 @@ class Game(FeedbackMixin):
             if isinstance(int_input, int):
                 return int_input
             self.print_failure_message(
-                "Invalid input, please enter a number from the displayed choices only.")
+                "Invalid input, please enter a number from the displayed choices only")
         except ValueError as e:
             self.print_failure_message(
-                "Invalid input, please enter numbers only to select an item.")
+                "Invalid input, please enter numbers only to select an item")
         failure_callback_func = getattr(self, callback_func)
         failure_callback_func(arg) if arg else failure_callback_func()
 
@@ -353,7 +353,7 @@ class Game(FeedbackMixin):
     def validate_cors(self, cors, board):
         if board.is_already_revealed(cors):
             self.print_failure_message(
-                "Entered cell position already revealed, please try new ones.")
+                "Entered cell position already revealed, please try new ones")
             self.play_round(board)
 
     def play_round(self, board):
