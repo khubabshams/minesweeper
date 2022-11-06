@@ -25,19 +25,29 @@ CHAR_START_REGEX = '^[a-zA-Z]'
 PASSWORD_LENGTH = 8
 
 
-def print_colord_message(message, color):
-    print(colored(message, color))
+class FeedbackMixin:
+
+    def print_colored_message(self, message, color="white", attrs=[]):
+        print(colored(message, color=color, attrs=attrs))
+
+    def print_failure_message(self, error_message):
+        self.print_colored_message(error_message, 'red')
+
+    def print_success_message(self, success_message):
+        self.print_colored_message(success_message, 'green')
+
+    def print_on_console(self, content):
+        Console().print(content, justify="center")
+
+    def print_title(self, text):
+        fig = Figlet(font='rectangles', justify="center", width=150)
+        self.print_colored_message(fig.renderText(text), attrs=['bold'])
+
+    def print_from_markup(self, markup_text):
+        self.print_on_console(Markdown(markup_text))
 
 
-def print_failure_message(error_message):
-    print_colord_message(error_message, 'red')
-
-
-def print_success_message(success_message):
-    print_colord_message(success_message, 'green')
-
-
-class Board:
+class Board(FeedbackMixin):
 
     def _initiate_cells(self):
         return [['🔒' for col in range(self.col_size)]
@@ -136,20 +146,17 @@ class Board:
         table = self._add_rows(table, style)
         return table
 
-    def print_table(self, table):
-        Console().print(table, justify="center")
-
     def show(self):
         table = self.draw_board()
-        self.print_table(table)
+        self.console_print(table)
 
     def show_real_board(self):
         self.show_mines()
         table = self.draw_board()
-        self.print_table(table)
+        self.console_print(table)
 
 
-class User:
+class User(FeedbackMixin):
 
     def __init__(self):
         cred = credentials.Certificate("serviceAccountKey.json")
@@ -166,7 +173,7 @@ class User:
 
     def _authentication_response(self, user_data):
         self._set_user_data(user_data)
-        print_success_message(
+        self.print_success_message(
             f"Hi {user_data.get('username')}, enjoy playing ...\n")
         time.sleep(1)
 
@@ -175,7 +182,7 @@ class User:
         verified_password = user_record and bcrypt.\
             checkpw(password.encode('utf-8'), user_record["key"]) or False
         if not user_record or not verified_password:
-            print_failure_message(
+            self.print_failure_message(
                 "Wrong email or password, please try again.")
             self.login()
         return user_record
@@ -197,10 +204,10 @@ class User:
         if re.search(EMAIL_REGEX, email):
             if not self._is_email_registered(email):
                 return email
-            print_failure_message(
+            self.print_failure_message(
                 "Email already exists, please use a different email")
         else:
-            print_failure_message("Please enter a valid email")
+            self.print_failure_message("Please enter a valid email")
         return self._get_email()
 
     def _get_hashed_password(self, password):
@@ -210,22 +217,22 @@ class User:
     def _validate_username(self, name):
         if re.search(CHAR_START_REGEX, name):
             return name
-        print_failure_message("Name must start with a letter")
+        self.print_failure_message("Name must start with a letter")
         return self._get_username()
 
     def _validate_password(self, password, confirm=False):
         if re.search(CHAR_START_REGEX, password):
             if len(password) >= PASSWORD_LENGTH:
                 return password
-            print_failure_message(
+            self.print_failure_message(
                 f"Password must be a minimum of {PASSWORD_LENGTH} characters")
         else:
-            print_failure_message("Password must start with a letter")
+            self.print_failure_message("Password must start with a letter")
         return self._get_password(confirm)
 
     def _validate_confirmed_password(self, password, password_confirm):
         if password != password_confirm:
-            print_failure_message(
+            self.print_failure_message(
                 "Confirm password doesn't match entered password.")
             return self._get_confirmed_password()
         else:
@@ -275,7 +282,7 @@ class User:
         self.authenticate(email, password)
 
 
-class Game:
+class Game(FeedbackMixin):
 
     def _get_rules(self):
         return "Rules:\nChoosing a square which doesn't have a mine reveals the number of neighbouring squares containing mines. By a process of deduction, elimination and guesswork, this information can be used to work out where all the mines are."
@@ -292,19 +299,11 @@ class Game:
         level_info = LEVELS[self.level]
         return level_info['row'] if position_type == 'row' else level_info['col']
 
-    def formatted_title(self, text):
-        fig = Figlet(font='rectangles', justify="center", width=150)
-        print(colored(fig.renderText(text), attrs=['bold']))
-
-    def formatted_menu(self, text):
-        menu_text = Markdown(text)
-        Console().print(menu_text, justify="center")
-
     def __init__(self):
         self.user = User()
 
     def run(self):
-        self.formatted_title("Welcome to Minesweeper!")
+        self.print_title("Welcome to Minesweeper!")
         time.sleep(1)
         self.process_user_login()
         self.run_main_menu()
@@ -319,14 +318,16 @@ class Game:
             int_input = self._validate_int_input(input, possible_values)
             if isinstance(int_input, int):
                 return int_input
-            print("Invalid input, please enter a number from the displayed choices only.")
+            self.print_failure_message(
+                "Invalid input, please enter a number from the displayed choices only.")
         except ValueError as e:
-            print("Invalid input, please enter numbers only to select an item.")
+            self.print_failure_message(
+                "Invalid input, please enter numbers only to select an item.")
         failure_callback_func = getattr(self, callback_func)
         failure_callback_func(arg) if arg else failure_callback_func()
 
     def get_menu_choice(self, menu_text, possible_values, callback_func):
-        self.formatted_menu(menu_text)
+        self.print_from_markup(menu_text)
         menu_choice = input("Enter the number of your choice here:\n")
         return self.validate_number_input(menu_choice, possible_values,
                                           callback_func)
@@ -351,7 +352,8 @@ class Game:
 
     def validate_cors(self, cors, board):
         if board.is_already_revealed(cors):
-            print("Entered cell position already revealed, please try new ones.")
+            self.print_failure_message(
+                "Entered cell position already revealed, please try new ones.")
             self.play_round(board)
 
     def play_round(self, board):
@@ -371,7 +373,7 @@ class Game:
             self.play_round(board)
 
     def end_game(self, final_message):
-        self.formatted_title(final_message)
+        self.print_title(final_message)
         time.sleep(5)
         self.run_replay_menu()
 
@@ -394,7 +396,7 @@ class Game:
                                                [1, 2], "process_user_login")
             self.user.login() if menu_choice == 1 else self.user.signup()
         except Exception as e:
-            print_failure_message(
+            self.print_failure_message(
                 "an Error accured during the authentication process, please try again")
             self.process_user_login()
 
