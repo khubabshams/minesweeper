@@ -20,8 +20,8 @@ LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
           2: {'name': 'Medium', 'mines': 6, 'col': 4, 'row': 4},
           3: {'name': 'Hard', 'mines': 16, 'col': 6, 'row': 6}}
 
-EMAIL_REGEX = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-CHAR_START_REGEX = '^[a-zA-Z]'
+EMAIL_REGEX = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+CHAR_START_REGEX = r'^[a-zA-Z]'
 PASSWORD_LENGTH = 8
 
 
@@ -148,12 +148,12 @@ class Board(FeedbackMixin):
 
     def show(self):
         table = self.draw_board()
-        self.console_print(table)
+        self.print_on_console(table)
 
     def show_real_board(self):
         self.show_mines()
         table = self.draw_board()
-        self.console_print(table)
+        self.print_on_console(table)
 
 
 class User(FeedbackMixin):
@@ -248,8 +248,8 @@ class User(FeedbackMixin):
 
     def _get_password(self, confirm=False, validate=True):
         confirmation = confirm and " confirmation" or ""
-        password = getpass(
-            prompt=f"Enter your password{confirmation} here (hidden characters):")
+        password = getpass(prompt=f"Enter your password{confirmation}"
+                           " here (hidden characters):")
         return validate and self._validate_password(password, confirm) \
             or password
 
@@ -285,19 +285,26 @@ class User(FeedbackMixin):
 class Game(FeedbackMixin):
 
     def _get_rules(self):
-        return "Rules:\nChoosing a square which doesn't have a mine reveals the number of neighbouring squares containing mines. By a process of deduction, elimination and guesswork, this information can be used to work out where all the mines are."
+        return "Rules:\nChoosing a square which doesn't have a mine reveals"
+        "the number of neighbouring squares containing mines. "
+        "By a process of deduction, elimination and guesswork, "
+        "this information can be used to work out where all the mines are."
 
     def _get_about(self):
-        return "Minesweeper:\na Command line version of Minesweeper game developed by Khubab Shams."
+        return "Minesweeper:\na Command line version of Minesweeper game "
+        "developed by Khubab Shams."
 
     def _get_level_menu(self):
-        lev_text = "\n".join([f"## {lev}. {LEVELS[lev]['name']} {LEVELS[lev]['col']}x{LEVELS[lev]['row']} ({LEVELS[lev]['mines']} Mines)"
+        lev_text = "\n".join([f"## {lev}. {LEVELS[lev]['name']} "
+                              f"{LEVELS[lev]['col']}x{LEVELS[lev]['row']} "
+                              f"({LEVELS[lev]['mines']} Mines)"
                               for lev in LEVELS])
         return f"# Levels:\n{lev_text}"
 
     def _get_position_max_value(self, position_type):
         level_info = LEVELS[self.level]
-        return level_info['row'] if position_type == 'row' else level_info['col']
+        return level_info['row'] if position_type == 'row' \
+            else level_info['col']
 
     def __init__(self):
         self.user = User()
@@ -319,7 +326,8 @@ class Game(FeedbackMixin):
             if isinstance(int_input, int):
                 return int_input
             self.print_failure_message(
-                "Invalid input, please enter a number from the displayed choices only")
+                "Invalid input, please enter a number from the displayed "
+                "choices only")
         except ValueError as e:
             self.print_failure_message(
                 "Invalid input, please enter numbers only to select an item")
@@ -340,7 +348,8 @@ class Game(FeedbackMixin):
 
     def get_single_position(self, position_type):
         position_input = input(
-            f"Enter the number of the {position_type} of the selected cell here:\n")
+            f"Enter the number of the {position_type} of the selected cell"
+            " here:\n")
         max = self._get_position_max_value(position_type)
         return self.validate_number_input(position_input, list(range(max)),
                                           "get_single_position", position_type)
@@ -352,8 +361,8 @@ class Game(FeedbackMixin):
 
     def validate_cors(self, cors, board):
         if board.is_already_revealed(cors):
-            self.print_failure_message(
-                "Entered cell position already revealed, please try new ones")
+            self.print_failure_message("Entered cell position "
+                                       "already revealed, please try new ones")
             self.play_round(board)
 
     def play_round(self, board):
@@ -378,7 +387,8 @@ class Game(FeedbackMixin):
         self.run_replay_menu()
 
     def run_replay_menu(self):
-        menu_choice = self.get_menu_choice("# Play again?\n## 1. Yes\n## 2. No", [1, 2],
+        menu_choice = self.get_menu_choice("# Play again?\n## 1. Yes"
+                                           "\n## 2. No", [1, 2],
                                            "run_replay_menu")
         self.start_game() if menu_choice == 1 else self.run_main_menu()
 
@@ -392,12 +402,17 @@ class Game(FeedbackMixin):
 
     def process_user_login(self):
         try:
-            menu_choice = self.get_menu_choice("# Have account?\n## 1. Yes, we will ask you to sign in\n## 2. No, you can signup to have one",
-                                               [1, 2], "process_user_login")
+            menu_choice = self.get_menu_choice("# Have account?\n## "
+                                               "1. Yes, we will ask you to"
+                                               " sign in\n## "
+                                               "2. No, you can signup to have"
+                                               " one", [1, 2],
+                                               "process_user_login")
             self.user.login() if menu_choice == 1 else self.user.signup()
         except Exception as e:
-            self.print_failure_message(
-                "an Error accured during the authentication process, please try again")
+            self.print_failure_message("an Error accured during the "
+                                       "authentication process, "
+                                       "please try again")
             self.process_user_login()
 
     def print_game_info(self, info):
