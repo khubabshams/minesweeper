@@ -583,8 +583,8 @@ class Game(FeedbackMixin):
 
     def finsh_round(self, has_mine, board):
         """
-        Check if chosen cell has mine and end game, 
-        or if it's the final correct guess otherwise start a new round  
+        Check if chosen cell has mine and end game,
+        or if it's the final correct guess otherwise start a new round
         """
         if has_mine:
             self.show_board(board, hide_mines=False)
