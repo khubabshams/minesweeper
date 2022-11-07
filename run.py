@@ -26,6 +26,11 @@ NAME_LENGTH = 4
 PASSWORD_LENGTH = 8
 
 
+CRED = credentials.Certificate("serviceAccountKey.json")
+firebase_admin.initialize_app(CRED)
+FIREBASE_CLIENT = firestore.client()
+
+
 class FeedbackMixin:
 
     def print_colored_message(self, message, color="white", attrs=[]):
@@ -160,12 +165,10 @@ class Board(FeedbackMixin):
 class User(FeedbackMixin):
 
     def __init__(self):
-        cred = credentials.Certificate("serviceAccountKey.json")
-        firebase_admin.initialize_app(cred)
-        self.firestore_db = firestore.client()
+        pass
 
     def get_firestore_collection(self):
-        return self.firestore_db.collection(u'GameUsers')
+        return FIREBASE_CLIENT.collection(u'GameUsers')
 
     def _set_user_data(self, user_data):
         self.email = user_data.get('email')
