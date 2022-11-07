@@ -496,7 +496,8 @@ class Game(FeedbackMixin):
 
     def _validate_int_input(self, input, possible_values):
         """
-        Convert a given input to 'int' and check it's availability in a given list
+        Convert a given input to 'int'
+        and check it's availability in a given list
         """
         int_input = int(input)
         return int_input if int_input in possible_values else None
@@ -522,7 +523,8 @@ class Game(FeedbackMixin):
 
     def get_menu_choice(self, menu_text, possible_values, callback_func):
         """
-        Show menu text on terminal and get the user choice input and validate it
+        Show menu text on terminal and get the user choice input
+        and validate it
         """
         self.print_from_markup(menu_text)
         menu_choice = input("Enter the number of your choice here:\n")
