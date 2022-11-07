@@ -60,7 +60,7 @@ class Board(FeedbackMixin):
                 for row in range(self.row_size)]
 
     def _get_random_cors(self):
-        return (rnd.randrange(self.col_size), rnd.randrange(self.row_size))
+        return (rnd.randrange(self.row_size), rnd.randrange(self.col_size))
 
     def _initiate_mine(self):
         rand_cors = self._get_random_cors()
