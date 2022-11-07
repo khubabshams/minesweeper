@@ -187,17 +187,19 @@ class User(FeedbackMixin):
             self.login()
         return user_record
 
+    def _search_user_record(self, email):
+        firestore_collection = self.get_firestore_collection()
+        return firestore_collection.where(u'email', u'==', email).\
+            limit(1).get()
+
     def authenticate(self, email, password):
         print("Getting things done ...")
-        firestore_collection = self.get_firestore_collection()
-        docs = firestore_collection.where(u'email', u'==', email).\
-            limit(1).get()
+        docs = self._search_user_record(email)
         user_record = self._verify_user_record(docs, password)
         self._authentication_response(user_record)
 
     def _is_email_registered(self, email):
-        docs = self.get_firestore_collection().\
-            where(u'email', u'==', email).limit(1).get()
+        docs = self._search_user_record(email)
         return docs and docs[0].to_dict() and True or False
 
     def _validate_email(self, email):
@@ -453,4 +455,5 @@ def main():
     game.run()
 
 
-main()
+if __name__ == '__main__':
+    main()
