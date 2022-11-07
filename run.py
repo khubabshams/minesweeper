@@ -202,14 +202,8 @@ class User(FeedbackMixin):
         docs = self._search_user_record(email)
         return docs and docs[0].to_dict() and True or False
 
-    def is_valid_email(self, email):
-        if re.search(EMAIL_REGEX, email):
-            if not self._is_email_registered(email):
-                return True
-        return False
-
     def _validate_email(self, email):
-        if self.is_valid_email(email):
+        if re.search(EMAIL_REGEX, email):
             if not self._is_email_registered(email):
                 return email
             self.print_failure_message("Email already exists, "
