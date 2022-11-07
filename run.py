@@ -201,6 +201,7 @@ class User(FeedbackMixin):
         user_record = self._search_user_record(email)
         self._verify_user_record(user_record, password)
         self._authentication_response(user_record)
+        return user_record
 
     def _is_email_registered(self, email):
         user_record = self._search_user_record(email)
