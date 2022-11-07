@@ -181,8 +181,7 @@ class User(FeedbackMixin):
             f"Hi {user_data.get('username')}, enjoy playing ...\n")
         time.sleep(1)
 
-    def _verify_user_record(self, docs, password):
-        user_record = docs and docs[0].to_dict() or False
+    def _verify_user_record(self, user_record, password):
         verified_password = user_record and bcrypt.\
             checkpw(password.encode('utf-8'), user_record["key"]) or False
         if not user_record or not verified_password:
@@ -193,18 +192,19 @@ class User(FeedbackMixin):
 
     def _search_user_record(self, email):
         firestore_collection = self.get_firestore_collection()
-        return firestore_collection.where(u'email', u'==', email).\
+        docs = firestore_collection.where(u'email', u'==', email).\
             limit(1).get()
+        return docs and docs[0].to_dict() or False
 
     def authenticate(self, email, password):
         print("Getting things done ...")
-        docs = self._search_user_record(email)
-        user_record = self._verify_user_record(docs, password)
+        user_record = self._search_user_record(email)
+        self._verify_user_record(user_record, password)
         self._authentication_response(user_record)
 
     def _is_email_registered(self, email):
-        docs = self._search_user_record(email)
-        return docs and docs[0].to_dict() and True or False
+        user_record = self._search_user_record(email)
+        return user_record and True or False
 
     def _validate_email(self, email):
         if re.search(EMAIL_REGEX, email):
