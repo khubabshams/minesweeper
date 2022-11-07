@@ -22,6 +22,7 @@ LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
 
 EMAIL_REGEX = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
 CHAR_START_REGEX = r'^[a-zA-Z]'
+NAME_LENGTH = 4
 PASSWORD_LENGTH = 8
 
 
@@ -205,32 +206,32 @@ class User(FeedbackMixin):
     def _validate_email(self, email):
         if re.search(EMAIL_REGEX, email):
             if not self._is_email_registered(email):
-                return email
+                return True
             self.print_failure_message("Email already exists, "
                                        "please use a different email")
         else:
             self.print_failure_message("Please enter a valid email")
-        return self._get_email()
+        return False
 
     def _get_hashed_password(self, password):
         return bcrypt.hashpw(password.encode('utf-8'),
                              bcrypt.gensalt(rounds=10))
 
+    def _validate_credential(self, cred, length, cred_name):
+        if re.search(CHAR_START_REGEX, cred):
+            if len(cred) >= length:
+                return True
+            self.print_failure_message(
+                f"{cred_name} must be a minimum of {length} characters")
+        else:
+            self.print_failure_message(f"{cred_name} must start with a letter")
+        return False
+
     def _validate_username(self, name):
-        if re.search(CHAR_START_REGEX, name):
-            return name
-        self.print_failure_message("Name must start with a letter")
-        return self._get_username()
+        return self._validate_credential(name, NAME_LENGTH, 'Name')
 
     def _validate_password(self, password, confirm=False):
-        if re.search(CHAR_START_REGEX, password):
-            if len(password) >= PASSWORD_LENGTH:
-                return password
-            self.print_failure_message(
-                f"Password must be a minimum of {PASSWORD_LENGTH} characters")
-        else:
-            self.print_failure_message("Password must start with a letter")
-        return self._get_password(confirm)
+        return self._validate_credential(password, PASSWORD_LENGTH, 'Password')
 
     def _validate_confirmed_password(self, password, password_confirm):
         if password != password_confirm:
@@ -240,20 +241,25 @@ class User(FeedbackMixin):
         else:
             return password
 
-    def _get_username(self):
+    def _get_username(self, validate=True):
         name = input("Enter your name here:\n")
-        return self._validate_username(name)
+        validate and not self._validate_username(name) and \
+            self._get_username(validate)
+        return name
 
     def _get_email(self, validate=True):
         email = input("Enter your email here:\n")
-        return validate and self._validate_email(email) or email
+        validate and not self._validate_email(email) and \
+            self._get_email(validate)
+        return email
 
     def _get_password(self, confirm=False, validate=True):
         confirmation = confirm and " confirmation" or ""
         password = getpass(prompt=f"Enter your password{confirmation}"
                            " here (hidden characters):")
-        return validate and self._validate_password(password, confirm) \
-            or password
+        validate and not self._validate_password(password, confirm) and \
+            self._get_password(confirm, validate)
+        return password
 
     def _get_confirmed_password(self):
         password = self._get_password()
