@@ -138,6 +138,13 @@ class Game(FeedbackMixin):
                                        "already revealed, please try new ones")
             self.play_round(board)
 
+    def display_input(self, cors):
+        """
+        Display the entered coordinations to the user
+        """
+        print(f"You choosed row: {cors[0]},  column: {cors[1]}")
+        time.sleep(1)
+
     def play_round(self, board):
         """
         Ask user for his guessed cell position,
@@ -146,6 +153,7 @@ class Game(FeedbackMixin):
         self.show_board(board)
         cors = self.get_user_input()
         self.validate_cors(cors, board)
+        self.display_input(cors)
         has_mine = board.reveal_cell(cors)
         self.finsh_round(has_mine, board)
 
