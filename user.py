@@ -4,6 +4,7 @@ from firebase_admin import firestore
 from getpass import getpass
 import firebase_admin
 import bcrypt
+from typing import Union
 
 EMAIL_REGEX = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
 CHAR_START_REGEX = r'^[a-zA-Z]'
@@ -17,13 +18,14 @@ FIREBASE_CLIENT = firestore.client()
 
 class User(FeedbackMixin):
 
-    def get_firestore_collection(self):
+    def get_firestore_collection(self) -> firestore.collection.\
+            CollectionReference:
         """
         Get firebase game users collection
         """
         return FIREBASE_CLIENT.collection(u'GameUsers')
 
-    def _set_user_data(self, user_data):
+    def _set_user_data(self, user_data: dict) -> None:
         """
         Set user's object attributes
         """
@@ -31,7 +33,7 @@ class User(FeedbackMixin):
         self.password = user_data.get('password')
         self.username = user_data.get('username')
 
-    def _authentication_response(self, user_data):
+    def _authentication_response(self, user_data: dict) -> None:
         """
         Set user's attributes and print auth success message
         """
@@ -39,7 +41,7 @@ class User(FeedbackMixin):
         self.print_success_message(
             f"Hi {user_data.get('username')}, enjoy playing ...\n")
 
-    def _verify_user_record(self, user_record, password):
+    def _verify_user_record(self, user_record: dict, password: str) -> dict:
         """
         Check the user record and compare the hashed password
         with the one from user record and give feedback accordingly
@@ -52,7 +54,7 @@ class User(FeedbackMixin):
             self.login()
         return user_record
 
-    def _search_user_record(self, email):
+    def _search_user_record(self, email: str) -> Union[dict, bool]:
         """
         Search the game users table by email for a record of user
         """
@@ -61,7 +63,7 @@ class User(FeedbackMixin):
             limit(1).get()
         return docs and docs[0].to_dict() or False
 
-    def authenticate(self, email, password):
+    def authenticate(self, email: str, password: str) -> dict:
         """
         Identify if there's a record exist for user
         by searching by the given credentials
@@ -72,14 +74,14 @@ class User(FeedbackMixin):
         self._authentication_response(user_record)
         return user_record
 
-    def _is_email_registered(self, email):
+    def _is_email_registered(self, email: str) -> bool:
         """
         Check if the email in use already in game users table
         """
         user_record = self._search_user_record(email)
         return user_record and True or False
 
-    def _validate_email(self, email):
+    def _validate_email(self, email: str) -> bool:
         """
         Check if entered email is valid and provide a feedback
         """
@@ -92,14 +94,15 @@ class User(FeedbackMixin):
             self.print_failure_message("Please enter a valid email")
         return False
 
-    def _get_hashed_password(self, password):
+    def _get_hashed_password(self, password: str) -> bool:
         """
         Hashing a given password using bcrypt
         """
         return bcrypt.hashpw(password.encode('utf-8'),
                              bcrypt.gensalt(rounds=10))
 
-    def _validate_credential(self, cred, length, cred_name):
+    def _validate_credential(self, cred: str, length: int,
+                             cred_name: str) -> bool:
         """
         Check if the entered credential meets validity requirements
         (starting by letter, minimum characters size)
@@ -113,23 +116,25 @@ class User(FeedbackMixin):
             self.print_failure_message(f"{cred_name} must start with a letter")
         return False
 
-    def _validate_username(self, name):
+    def _validate_username(self, name: str) -> bool:
         """
         Check if entered name is starting with a letter,
         and have amin of NAME_LENGTH
         """
         return self._validate_credential(name, NAME_LENGTH, 'Name')
 
-    def _validate_password(self, password, confirm=False):
+    def _validate_password(self, password: str, confirm: bool = False) -> bool:
         """
         Check if entered password is starting with a letter,
         and have amin of PASSWORD_LENGTH
         """
         return self._validate_credential(password, PASSWORD_LENGTH, 'Password')
 
-    def _validate_confirmed_password(self, password, password_confirm):
+    def _validate_confirmed_password(self, password: str,
+                                     password_confirm: str) -> str:
         """
-        Check [confirmation] password if it's meets the validity requirements
+        Match password with confirmation password
+        re-ask for password if it's not matched
         """
         if password != password_confirm:
             self.print_failure_message(
@@ -138,7 +143,7 @@ class User(FeedbackMixin):
         else:
             return password
 
-    def _get_username(self, validate=True):
+    def _get_username(self, validate: bool = True) -> str:
         """
         Get the user input of his name and validate it
         """
@@ -147,7 +152,7 @@ class User(FeedbackMixin):
             self._get_username(validate)
         return name
 
-    def _get_email(self, validate=True):
+    def _get_email(self, validate: bool = True) -> str:
         """
         Get the user input of his email and validate it
         """
@@ -156,7 +161,8 @@ class User(FeedbackMixin):
             self._get_email(validate)
         return email
 
-    def _get_password(self, confirm=False, validate=True):
+    def _get_password(self, confirm: bool = False,
+                      validate: bool = True) -> str:
         """
         Get the user input of his login [confirmation] password and validate it
         """
@@ -167,7 +173,7 @@ class User(FeedbackMixin):
             self._get_password(confirm, validate)
         return password
 
-    def _get_confirmed_password(self):
+    def _get_confirmed_password(self) -> str:
         """
         Get the user input of password and a confirmation and validate it
         """
@@ -175,7 +181,8 @@ class User(FeedbackMixin):
         password_confirm = self._get_password(confirm=True)
         return self._validate_confirmed_password(password, password_confirm)
 
-    def _do_signup(self, username, email, password):
+    def _do_signup(self, username: str, email: str,
+                   password: str) -> firestore.document.DocumentReference:
         """
         Prepare user data and create a database record with it
         """
@@ -189,16 +196,16 @@ class User(FeedbackMixin):
         _, doc_ref = firestore_collection.add(user_data)
         return doc_ref
 
-    def login(self):
+    def login(self) -> dict:
         """
         Ask for email, password. authenticate user credentials
         and show feedback
         """
         email = self._get_email(validate=False)
         password = self._get_password(validate=False)
-        self.authenticate(email, password)
+        return self.authenticate(email, password)
 
-    def signup(self):
+    def signup(self) -> dict:
         """
         Rigister user data for first time in the database and authenticate
         """
@@ -206,4 +213,4 @@ class User(FeedbackMixin):
         email = self._get_email()
         password = self._get_confirmed_password()
         doc_ref = self._do_signup(username, email, password)
-        self.authenticate(email, password)
+        return self.authenticate(email, password)
