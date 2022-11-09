@@ -6,20 +6,20 @@ from utility import FeedbackMixin
 
 class Board(FeedbackMixin):
 
-    def _initiate_cells(self):
+    def _initiate_cells(self) -> list:
         """
         Preparing values of cells 2-d list
         """
         return [['🔒' for col in range(self.col_size)]
                 for row in range(self.row_size)]
 
-    def _get_random_cors(self):
+    def _get_random_cors(self) -> tuple:
         """
         Getting a tuple of random coordinations (row, col)
         """
         return (rnd.randrange(self.row_size), rnd.randrange(self.col_size))
 
-    def _initiate_mine(self):
+    def _initiate_mine(self) -> tuple:
         """
         Generate mine random coordination
         """
@@ -27,7 +27,7 @@ class Board(FeedbackMixin):
         return rand_cors if not self.has_mine(rand_cors)\
             else self._initiate_mine()
 
-    def _set_mines(self):
+    def _set_mines(self) -> None:
         """
         Setting the mines list by mines_num number of elements
         """
@@ -35,14 +35,14 @@ class Board(FeedbackMixin):
             mine_cors = self._initiate_mine()
             self.mines.append(mine_cors)
 
-    def _build_cells(self):
+    def _build_cells(self) -> None:
         """
         Set cells and mines lists
         """
         self.cells = self._initiate_cells()
         self._set_mines()
 
-    def __init__(self, col_size, row_size, mines_num):
+    def __init__(self, col_size: int, row_size: int, mines_num: int) -> None:
         """
         Initialize Board object
         """
@@ -51,13 +51,13 @@ class Board(FeedbackMixin):
         self.revealed_cells, self.mines = [], []
         self._build_cells()
 
-    def has_mine(self, cors):
+    def has_mine(self, cors) -> bool:
         """
         Check if the given cell exist in the mines list
         """
         return cors in self.mines
 
-    def get_neighbour_cells_cors(self, cors):
+    def get_neighbour_cells_cors(self, cors: tuple) -> list:
         """
         Get a list of all direct neighbours coordinates of a cell
         """
@@ -66,7 +66,7 @@ class Board(FeedbackMixin):
                 (row, col - 1), (row, col + 1),
                 (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
 
-    def calculate_neighbour_mines_num(self, cors):
+    def calculate_neighbour_mines_num(self, cors: tuple) -> int:
         """
         Calculate the number of the mines in neighbours for a specific cell
         """
@@ -74,7 +74,7 @@ class Board(FeedbackMixin):
                     for cell_cors in
                     self.get_neighbour_cells_cors(cors)])
 
-    def set_neighbour_mines_num_style(self, neighbour_mines_num):
+    def set_neighbour_mines_num_style(self, neighbour_mines_num: int) -> str:
         """
         Set the neighbour mines num text style based on itself,
         the level of danger: >= 3 Red, >=1 Orange, 0 Green
@@ -84,7 +84,7 @@ class Board(FeedbackMixin):
             if neighbour_mines_num >= 1 else '[green]'
         return f"[bold]{color}{neighbour_mines_num}"
 
-    def set_neighbour_mines_num(self, cors):
+    def set_neighbour_mines_num(self, cors: tuple) -> None:
         """
         Set the content of the given cell to be it's neighbour mines number
         """
@@ -92,27 +92,27 @@ class Board(FeedbackMixin):
         self.cells[cors[0]][cors[1]] = self.set_neighbour_mines_num_style(
             neighbour_mines_num)
 
-    def is_already_revealed(self, cors):
+    def is_already_revealed(self, cors: tuple) -> bool:
         """
         Check if the cell revealed before already
         """
         return cors in self.revealed_cells
 
-    def is_all_cells_revealed(self):
+    def is_all_cells_revealed(self) -> bool:
         """
         Check if all non-mines cells has been revealed
         """
         return len(self.revealed_cells) + self.mines_num ==\
             self.col_size * self.row_size
 
-    def update_board_data(self, cors):
+    def update_board_data(self, cors: tuple) -> None:
         """
         Add the cell to the revealed cells list and update it's content
         """
         self.revealed_cells.append(cors)
         self.set_neighbour_mines_num(cors)
 
-    def reveal_cell(self, cors):
+    def reveal_cell(self, cors: tuple) -> bool:
         """
         Check cell if it's contains a mine or not, and if not update the board
         """
@@ -122,7 +122,7 @@ class Board(FeedbackMixin):
             self.update_board_data(cors)
             return False
 
-    def _create_table(self, style):
+    def _create_table(self, style: str) -> Table:
         """
         Create rich.table with specific style and add all columns
         """
@@ -132,7 +132,7 @@ class Board(FeedbackMixin):
             table.add_column(f"{style}{indx}", width=3)
         return table
 
-    def _add_rows(self, table, style):
+    def _add_rows(self, table: Table, style: str) -> Table:
         """
         Add styled rows for a given rich.table
         """
@@ -143,21 +143,21 @@ class Board(FeedbackMixin):
             row_indx += 1
         return table
 
-    def _add_mine(self, row, col):
+    def _add_mine(self, row: int, col: int) -> None:
         """
         Replace the content of a cell with mine emoji if it's in the mines list
         """
         if self.has_mine((row, col)):
             self.cells[row][col] = "💥"
 
-    def show_mines(self):
+    def show_mines(self) -> None:
         """
         Replace content of all cells which in the mines list
         """
         [[self._add_mine(row, col) for col in range(self.col_size)]
          for row in range(self.row_size)]
 
-    def draw_board(self):
+    def draw_board(self) -> Table:
         """
         Draw a table of row and column based on the board dimensions
         """
@@ -166,14 +166,14 @@ class Board(FeedbackMixin):
         table = self._add_rows(table, style)
         return table
 
-    def show(self):
+    def show(self) -> None:
         """
         Show board on terminal
         """
         table = self.draw_board()
         self.print_on_console(table)
 
-    def show_real_board(self):
+    def show_real_board(self) -> None:
         """
         Show board on terminal with mine shown
         """
