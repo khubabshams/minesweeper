@@ -3,6 +3,7 @@ from user import User
 from utility import FeedbackMixin
 import time
 import re
+from typing import Union
 
 
 MENU_ACTIONS = {1: "initiate_game", 2: "show_rules", 3: "show_about"}
@@ -14,7 +15,7 @@ LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
 
 class Game(FeedbackMixin):
 
-    def _get_rules(self):
+    def _get_rules(self) -> str:
         """
         Get 'rules' text
         """
@@ -23,14 +24,14 @@ class Game(FeedbackMixin):
         "By a process of deduction, elimination and guesswork, "
         "this information can be used to work out where all the mines are."
 
-    def _get_about(self):
+    def _get_about(self) -> str:
         """
         Get 'about' text
         """
         return "Minesweeper:\na Command line version of Minesweeper game "
         "developed by Khubab Shams."
 
-    def _get_level_menu(self):
+    def _get_level_menu(self) -> str:
         """
         Prepare 'level menu' content
         """
@@ -40,7 +41,7 @@ class Game(FeedbackMixin):
                               for lev in LEVELS])
         return f"# Levels:\n{lev_text}"
 
-    def _get_position_max_value(self, position_type):
+    def _get_position_max_value(self, position_type: str) -> int:
         """
         Get maximum number of the index based on if it's a row or a column
         """
@@ -48,13 +49,13 @@ class Game(FeedbackMixin):
         return level_info['row'] if position_type == 'row' \
             else level_info['col']
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initialize Game object
         """
         self.user = User()
 
-    def run(self):
+    def run(self) -> None:
         """
         Welcome user, and process login if successed show main menu
         """
@@ -62,7 +63,8 @@ class Game(FeedbackMixin):
         self.process_user_login()
         self.run_main_menu()
 
-    def _validate_int_input(self, input, possible_values):
+    def _validate_int_input(self, input: str,
+                            possible_values: list) -> Union[int, bool]:
         """
         Convert a given input to 'int'
         and check it's availability in a given list
@@ -70,8 +72,9 @@ class Game(FeedbackMixin):
         int_input = int(input)
         return int_input if int_input in possible_values else None
 
-    def validate_number_input(self, input, possible_values,
-                              callback_func, arg=None):
+    def validate_number_input(self, input: str, possible_values: list,
+                              callback_func: str,
+                              arg: str = None) -> Union[int, None]:
         """
         Validate and return an input if it's a number and available in given
         choices, and callback a function if it's not
@@ -89,7 +92,8 @@ class Game(FeedbackMixin):
         failure_callback_func = getattr(self, callback_func)
         failure_callback_func(arg) if arg else failure_callback_func()
 
-    def get_menu_choice(self, menu_text, possible_values, callback_func):
+    def get_menu_choice(self, menu_text: str, possible_values: list,
+                        callback_func: str) -> Union[int, None]:
         """
         Show menu text on terminal and get the user choice input
         and validate it
@@ -99,7 +103,7 @@ class Game(FeedbackMixin):
         return self.validate_number_input(menu_choice, possible_values,
                                           callback_func)
 
-    def initiate_board(self):
+    def initiate_board(self) -> Board:
         """
         Create the game board with dimensions based on the selected level
         """
@@ -108,7 +112,7 @@ class Game(FeedbackMixin):
                       level_info['mines'])
         return board
 
-    def get_single_position(self, position_type):
+    def get_single_position(self, position_type: str) -> Union[int, None]:
         """
         Get the position number of the chosen row or column
         and validate the input to ensure it's applicable on board
@@ -120,7 +124,7 @@ class Game(FeedbackMixin):
         return self.validate_number_input(position_input, list(range(max)),
                                           "get_single_position", position_type)
 
-    def get_user_input(self):
+    def get_user_input(self) -> tuple:
         """
         Get the user input of the row and column of his chosen cell
         """
@@ -128,7 +132,7 @@ class Game(FeedbackMixin):
         col_position = self.get_single_position('column')
         return (row_position, col_position)
 
-    def validate_cors(self, cors, board):
+    def validate_cors(self, cors: tuple, board: Board) -> None:
         """
         Check if the cors not revealed before and if it's inform the user
         and recall the play round function
@@ -138,14 +142,14 @@ class Game(FeedbackMixin):
                                        "already revealed, please try new ones")
             self.play_round(board)
 
-    def display_input(self, cors):
+    def display_input(self, cors: tuple) -> None:
         """
         Display the entered coordinations to the user
         """
         print(f"You choosed row: {cors[0]},  column: {cors[1]}")
         time.sleep(1)
 
-    def play_round(self, board):
+    def play_round(self, board: Board) -> None:
         """
         Ask user for his guessed cell position,
         validate position and check mine in it
@@ -157,7 +161,7 @@ class Game(FeedbackMixin):
         has_mine = board.reveal_cell(cors)
         self.finsh_round(has_mine, board)
 
-    def finsh_round(self, has_mine, board):
+    def finsh_round(self, has_mine: bool, board: Board) -> None:
         """
         Check if chosen cell has mine and end game,
         or if it's the final correct guess otherwise start a new round
@@ -170,7 +174,7 @@ class Game(FeedbackMixin):
         else:
             self.play_round(board)
 
-    def end_game(self, final_message):
+    def end_game(self, final_message: str) -> None:
         """
         Show an end game message (win, lose), and call replay menu
         """
@@ -178,7 +182,7 @@ class Game(FeedbackMixin):
         time.sleep(5)
         self.run_replay_menu()
 
-    def run_replay_menu(self):
+    def run_replay_menu(self) -> None:
         """
         Show the user an options to replay game or back to the main menu
         """
@@ -187,21 +191,21 @@ class Game(FeedbackMixin):
                                            "run_replay_menu")
         self.start_game() if menu_choice == 1 else self.run_main_menu()
 
-    def initiate_game(self):
+    def initiate_game(self) -> None:
         """
         Get the level and start new game
         """
         self.level = self.get_game_level()
         self.start_game()
 
-    def start_game(self):
+    def start_game(self) -> None:
         """
         Initialize the game board and start the first round
         """
         board = self.initiate_board()
         self.play_round(board)
 
-    def process_user_login(self):
+    def process_user_login(self) -> None:
         """
         Show login menu and get the user input to call login or signup
         """
@@ -220,7 +224,7 @@ class Game(FeedbackMixin):
                                        "please try again")
             self.process_user_login()
 
-    def print_game_info(self, info):
+    def print_game_info(self, info: str) -> None:
         """
         Print text on the terminal and get back to the main menu
         """
@@ -228,19 +232,19 @@ class Game(FeedbackMixin):
         time.sleep(5)
         self.run_main_menu()
 
-    def show_rules(self):
+    def show_rules(self) -> None:
         """
         Show 'rules' text
         """
         self.print_game_info(self._get_rules())
 
-    def show_about(self):
+    def show_about(self) -> None:
         """
         Get 'about' text
         """
         self.print_game_info(self._get_about())
 
-    def show_board(self, board, hide_mines=True):
+    def show_board(self, board: Board, hide_mines: bool = True) -> None:
         """
         Show the user board with an option to show mines places
         """
@@ -249,14 +253,14 @@ class Game(FeedbackMixin):
         else:
             board.show_real_board()
 
-    def exec_menu_choice(self, menu_choice):
+    def exec_menu_choice(self, menu_choice: int) -> None:
         """
         Execute a specific function based on menu choice
         """
         function = getattr(self, MENU_ACTIONS.get(menu_choice))
         function()
 
-    def run_main_menu(self):
+    def run_main_menu(self) -> None:
         """
         Show the main menu on terminal, get the user input
         and respond accordingly
@@ -266,7 +270,7 @@ class Game(FeedbackMixin):
                                            "run_main_menu")
         self.exec_menu_choice(menu_choice)
 
-    def get_game_level(self):
+    def get_game_level(self) -> int:
         """
         Show the level menu and get the user input
         """
