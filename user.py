@@ -18,8 +18,7 @@ FIREBASE_CLIENT = firestore.client()
 
 class User(FeedbackMixin):
 
-    def get_firestore_collection(self) -> firestore.collection.\
-            CollectionReference:
+    def get_firestore_collection(self) -> object:
         """
         Get firebase game users collection
         """
@@ -182,7 +181,7 @@ class User(FeedbackMixin):
         return self._validate_confirmed_password(password, password_confirm)
 
     def _do_signup(self, username: str, email: str,
-                   password: str) -> firestore.document.DocumentReference:
+                   password: str) -> object:
         """
         Prepare user data and create a database record with it
         """
