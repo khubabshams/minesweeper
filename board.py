@@ -1,10 +1,10 @@
 import random as rnd
 from rich.table import Table
 import time
-from utility import FeedbackMixin
+from utility import UtilityMixin
 
 
-class Board(FeedbackMixin):
+class Board(UtilityMixin):
 
     def _initiate_cells(self) -> list:
         """

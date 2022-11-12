@@ -1,4 +1,4 @@
-from utility import FeedbackMixin
+from utility import UtilityMixin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from getpass import getpass
@@ -17,7 +17,7 @@ firebase_admin.initialize_app(CRED)
 FIREBASE_CLIENT = firestore.client()
 
 
-class User(FeedbackMixin):
+class User(UtilityMixin):
 
     def get_firestore_collection(self) -> object:
         """
