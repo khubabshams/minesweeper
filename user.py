@@ -5,6 +5,7 @@ from getpass import getpass
 import firebase_admin
 import bcrypt
 from typing import Union
+import re
 
 EMAIL_REGEX = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
 CHAR_START_REGEX = r'^[a-zA-Z]'

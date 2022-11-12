@@ -2,7 +2,6 @@ from board import Board
 from user import User
 from utility import FeedbackMixin
 import time
-import re
 from typing import Union
 
 
