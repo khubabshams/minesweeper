@@ -336,13 +336,13 @@ class Game(UtilityMixin):
                                     "get_game_level")
 
 
-def signal_handler(signal, frame):
+def signal_handler(signal: int, frame: object) -> None:
     """
     Handle the default behaviour of Ctrl+C user input
     which cause (KeyboardInterrupt) Error
     Found on 'rtfpessoa' Github repos
     """
-    print("\nExitting Minesweeper, click on 'Run Game' to restart again ...")
+    print("\nExitting Minesweeper, click on 'RUN GAME' to restart again ...")
     sys.exit(0)
 
 
