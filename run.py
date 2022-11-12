@@ -16,7 +16,10 @@ DEFAULT_TITLE_SPACE = "\t\t\t\t\t"
 class Game(FeedbackMixin):
 
     def _get_welcome_title(self) -> str:
-        return F"""
+        """
+        Get formatted 'welcome to minesweeper!' message
+        """
+        return f"""
 {DEFAULT_TITLE_SPACE} _ _ _     _                      _
 {DEFAULT_TITLE_SPACE}| | | |___| |___ ___ _____ ___   | |_ ___
 {DEFAULT_TITLE_SPACE}| | | | -_| |  _| . |     | -_|  |  _| . |
@@ -28,7 +31,30 @@ class Game(FeedbackMixin):
 {DEFAULT_TITLE_SPACE}| | | | |   | -_|_ -| | | | -_| -_| . | -_|  _|__|
 {DEFAULT_TITLE_SPACE}|_|_|_|_|_|_|___|___|_____|___|___|  _|___|_| |__|
 {DEFAULT_TITLE_SPACE}                                  |_|
+"""
+
+    def _get_win_title(self) -> str:
         """
+        Get formatted 'you win!' message
+        """
+        return f"""
+{DEFAULT_TITLE_SPACE}                                     __
+{DEFAULT_TITLE_SPACE} __ __ _____ _____    _ _ _ __ _____|  |
+{DEFAULT_TITLE_SPACE}|  |  |     |  |  |  | | | |  |   | |  |
+{DEFAULT_TITLE_SPACE}|_   _|  |  |  |  |  | | | |  | | | |__|
+{DEFAULT_TITLE_SPACE}  |_| |_____|_____|  |_____|__|_|___|__|
+"""
+
+    def _get_game_over_title(self) -> str:
+        """
+        Get formatted 'game over' message
+        """
+        return f"""
+{DEFAULT_TITLE_SPACE} _____ _____ _____ _____    _____ _____ _____ _____
+{DEFAULT_TITLE_SPACE}|   __|  _  |     |   __|  |     |  |  |   __| __  |
+{DEFAULT_TITLE_SPACE}|  |  |     | | | |   __|  |  |  |  |  |   __|    -|
+{DEFAULT_TITLE_SPACE}|_____|__|__|_|_|_|_____|  |_____|\\___/|_____|__|__|
+"""
 
     def _get_rules(self) -> str:
         """
@@ -75,7 +101,6 @@ class Game(FeedbackMixin):
         Welcome user, and process login if successed show main menu
         """
         print(self._get_welcome_title())
-        # self.print_title("Welcome to Minesweeper!")
         self.process_user_login()
         self.run_main_menu()
 
@@ -184,17 +209,29 @@ class Game(FeedbackMixin):
         """
         if has_mine:
             self.show_board(board, hide_mines=False)
-            self.end_game("GAME OVER")
+            self.end_game(False)
         elif board.is_all_cells_revealed():
-            self.end_game("YOU WIN!")
+            self.end_game(True)
         else:
             self.play_round(board)
 
-    def end_game(self, final_message: str) -> None:
+    def show_game_over(self) -> None:
+        """
+        Show 'game over' message on terminal
+        """
+        print(self._get_game_over_title())
+
+    def show_win(self) -> None:
+        """
+        Show 'you win' message on terminal
+        """
+        print(self._get_win_title())
+
+    def end_game(self, won: bool) -> None:
         """
         Show an end game message (win, lose), and call replay menu
         """
-        self.print_title(final_message)
+        self.show_win() if won else self.show_game_over()
         time.sleep(5)
         self.run_replay_menu()
 
