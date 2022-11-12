@@ -31,13 +31,13 @@ class FeedbackMixin:
         """
         Using rich console to print a given content
         """
-        Console().print(content, justify="center")
+        Console().print(content)
 
     def print_title(self, text: str) -> None:
         """
         Print text in shape of centered rectangles
         """
-        fig = Figlet(font='rectangles', justify="center")
+        fig = Figlet(font='rectangles')
         self.print_colored_message(fig.renderText(text), attrs=['bold'])
 
     def print_from_markup(self, markup_text: str) -> None:
