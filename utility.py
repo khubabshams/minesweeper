@@ -1,7 +1,6 @@
 from rich.console import Console
 from rich.markdown import Markdown
 from termcolor import colored
-from pyfiglet import Figlet
 import time
 
 
@@ -32,13 +31,6 @@ class FeedbackMixin:
         Using rich console to print a given content
         """
         Console().print(content, justify="center")
-
-    def print_title(self, text: str) -> None:
-        """
-        Print text in shape of centered rectangles
-        """
-        fig = Figlet(font='rectangles', justify="center")
-        self.print_colored_message(fig.renderText(text), attrs=['bold'])
 
     def print_from_markup(self, markup_text: str) -> None:
         """
