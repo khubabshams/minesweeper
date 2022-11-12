@@ -80,7 +80,7 @@ class Game(FeedbackMixin):
                               f"{LEVELS[lev]['col']}x{LEVELS[lev]['row']} "
                               f"({LEVELS[lev]['mines']} Mines)"
                               for lev in LEVELS])
-        return f"# Levels:\n{lev_text}"
+        return f"# Levels:\n{lev_text}\n##"
 
     def _get_position_max_value(self, position_type: str) -> int:
         """
@@ -240,7 +240,7 @@ class Game(FeedbackMixin):
         Show the user an options to replay game or back to the main menu
         """
         menu_choice = self.get_menu_choice("# Play again?\n## 1. Yes"
-                                           "\n## 2. No", [1, 2],
+                                           "\n## 2. No\n##", [1, 2],
                                            "run_replay_menu")
         self.start_game() if menu_choice == 1 else self.run_main_menu()
 
@@ -267,7 +267,7 @@ class Game(FeedbackMixin):
                                                "1. Yes, we will ask you to"
                                                " sign in\n## "
                                                "2. No, you can signup to have"
-                                               " one", [1, 2],
+                                               " one\n##", [1, 2],
                                                "process_user_login")
             self.user.login() if menu_choice == 1 else self.user.signup()
         except Exception as e:
@@ -318,7 +318,8 @@ class Game(FeedbackMixin):
         Show the main menu on terminal, get the user input
         and respond accordingly
         """
-        main_menu = "# Main Menu:\n## 1. Start Game\n## 2. Rules\n## 3. About"
+        main_menu =\
+            "# Main Menu:\n## 1. Start Game\n## 2. Rules\n ## 3. About\n##"
         menu_choice = self.get_menu_choice(main_menu, [1, 2, 3],
                                            "run_main_menu")
         self.exec_menu_choice(menu_choice)
