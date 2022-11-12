@@ -10,23 +10,24 @@ MENU_ACTIONS = {1: "initiate_game", 2: "show_rules", 3: "show_about"}
 LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
           2: {'name': 'Medium', 'mines': 6, 'col': 4, 'row': 4},
           3: {'name': 'Hard', 'mines': 16, 'col': 6, 'row': 6}}
+DEFAULT_TITLE_SPACE = "\t\t\t\t\t"
 
 
 class Game(FeedbackMixin):
 
     def _get_welcome_title(self) -> str:
-        return """
-                    _ _ _     _                      _
-                   | | | |___| |___ ___ _____ ___   | |_ ___
-                   | | | | -_| |  _| . |     | -_|  |  _| . |
-                   |_____|___|_|___|___|_|_|_|___|  |_| |___|
+        return F"""
+{DEFAULT_TITLE_SPACE} _ _ _     _                      _
+{DEFAULT_TITLE_SPACE}| | | |___| |___ ___ _____ ___   | |_ ___
+{DEFAULT_TITLE_SPACE}| | | | -_| |  _| . |     | -_|  |  _| . |
+{DEFAULT_TITLE_SPACE}|_____|___|_|___|___|_|_|_|___|  |_| |___|
 
-                                                              __
-                _____ _                                      |  |
-               |     |_|___ ___ ___ _ _ _ ___ ___ ___ ___ ___|  |
-               | | | | |   | -_|_ -| | | | -_| -_| . | -_|  _|__|
-               |_|_|_|_|_|_|___|___|_____|___|___|  _|___|_| |__|
-                                                 |_|
+{DEFAULT_TITLE_SPACE}                                               __
+{DEFAULT_TITLE_SPACE} _____ _                                      |  |
+{DEFAULT_TITLE_SPACE}|     |_|___ ___ ___ _ _ _ ___ ___ ___ ___ ___|  |
+{DEFAULT_TITLE_SPACE}| | | | |   | -_|_ -| | | | -_| -_| . | -_|  _|__|
+{DEFAULT_TITLE_SPACE}|_|_|_|_|_|_|___|___|_____|___|___|  _|___|_| |__|
+{DEFAULT_TITLE_SPACE}                                  |_|
         """
 
     def _get_rules(self) -> str:
