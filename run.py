@@ -1,6 +1,6 @@
 from board import Board
 from user import User
-from utility import FeedbackMixin
+from utility import UtilityMixin
 import time
 from typing import Union
 import signal
@@ -15,7 +15,7 @@ LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
 DEFAULT_TITLE_SPACE = "\t\t"
 
 
-class Game(FeedbackMixin):
+class Game(UtilityMixin):
 
     def _get_welcome_title(self) -> str:
         """
@@ -103,6 +103,7 @@ class Game(FeedbackMixin):
         Welcome user, and process login if successed show main menu
         """
         print(self._get_welcome_title())
+        self.sleep(2)
         self.process_user_login()
         self.run_main_menu()
 
@@ -190,7 +191,7 @@ class Game(FeedbackMixin):
         Display the entered coordinations to the user
         """
         print(f"You choosed row: {cors[0]},  column: {cors[1]}")
-        time.sleep(1)
+        self.sleep(1)
 
     def play_round(self, board: Board) -> None:
         """
@@ -234,7 +235,7 @@ class Game(FeedbackMixin):
         Show an end game message (win, lose), and call replay menu
         """
         self.show_win() if won else self.show_game_over()
-        time.sleep(5)
+        self.sleep(5)
         self.run_replay_menu()
 
     def run_replay_menu(self) -> None:
@@ -284,7 +285,7 @@ class Game(FeedbackMixin):
         Print text on the terminal and get back to the main menu
         """
         print(info)
-        time.sleep(5)
+        self.sleep(5)
         self.run_main_menu()
 
     def show_rules(self) -> None:
