@@ -37,7 +37,7 @@ class FeedbackMixin:
         """
         Print text in shape of centered rectangles
         """
-        fig = Figlet(font='rectangles', justify="center", width=150)
+        fig = Figlet(font='rectangles', justify="center")
         self.print_colored_message(fig.renderText(text), attrs=['bold'])
 
     def print_from_markup(self, markup_text: str) -> None:
