@@ -14,6 +14,21 @@ LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
 
 class Game(FeedbackMixin):
 
+    def _get_welcome_title(self) -> str:
+        return """
+                    _ _ _     _                      _
+                   | | | |___| |___ ___ _____ ___   | |_ ___
+                   | | | | -_| |  _| . |     | -_|  |  _| . |
+                   |_____|___|_|___|___|_|_|_|___|  |_| |___|
+
+                                                              __
+                _____ _                                      |  |
+               |     |_|___ ___ ___ _ _ _ ___ ___ ___ ___ ___|  |
+               | | | | |   | -_|_ -| | | | -_| -_| . | -_|  _|__|
+               |_|_|_|_|_|_|___|___|_____|___|___|  _|___|_| |__|
+                                                 |_|
+        """
+
     def _get_rules(self) -> str:
         """
         Get 'rules' text
@@ -58,7 +73,8 @@ class Game(FeedbackMixin):
         """
         Welcome user, and process login if successed show main menu
         """
-        self.print_title("Welcome to Minesweeper!")
+        print(self._get_welcome_title())
+        # self.print_title("Welcome to Minesweeper!")
         self.process_user_login()
         self.run_main_menu()
 
