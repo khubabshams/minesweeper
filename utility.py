@@ -4,7 +4,13 @@ from termcolor import colored
 import time
 
 
-class FeedbackMixin:
+class UtilityMixin:
+
+    def sleep(self, seconds):
+        """
+        Wait for a given number of seconds
+        """
+        time.sleep(seconds)
 
     def print_colored_message(self, message: str, color: str = "white",
                               attrs: list = []) -> None:
@@ -12,7 +18,7 @@ class FeedbackMixin:
         Print given a text on terminal with specific color and attributes
         """
         print(colored(message, color=color, attrs=attrs))
-        time.sleep(2)
+        self.sleep(2)
 
     def print_failure_message(self, error_message: str) -> None:
         """
