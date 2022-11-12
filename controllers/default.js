@@ -50,8 +50,8 @@ function socket() {
 }
 
 if (process.env.CREDS != null) {
-    console.log("Creating creds.json file.");
-    fs.writeFile('creds.json', process.env.CREDS, 'utf8', function (err) {
+    console.log("Creating serviceAccountKey.json file.");
+    fs.writeFile('serviceAccountKey.json', process.env.CREDS, 'utf8', function (err) {
         if (err) {
             console.log('Error writing file: ', err);
             socket.emit("console_output", "Error saving credentials: " + err);
