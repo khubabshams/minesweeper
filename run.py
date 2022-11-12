@@ -10,7 +10,7 @@ MENU_ACTIONS = {1: "initiate_game", 2: "show_rules", 3: "show_about"}
 LEVELS = {1: {'name': 'Easy', 'mines': 3, 'col': 3, 'row': 3},
           2: {'name': 'Medium', 'mines': 6, 'col': 4, 'row': 4},
           3: {'name': 'Hard', 'mines': 16, 'col': 6, 'row': 6}}
-DEFAULT_TITLE_SPACE = "\t\t\t\t\t"
+DEFAULT_TITLE_SPACE = "\t\t"
 
 
 class Game(FeedbackMixin):
