@@ -126,7 +126,7 @@ class Board(UtilityMixin):
         """
         Create rich.table with specific style and add all columns
         """
-        table = Table(title="", min_width=50, show_lines=True)
+        table = Table(title="", show_lines=True)
         table.add_column("#", width=1)
         for indx in range(self.col_size):
             table.add_column(f"{style}{indx}", width=3)
