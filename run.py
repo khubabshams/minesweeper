@@ -3,6 +3,8 @@ from user import User
 from utility import FeedbackMixin
 import time
 from typing import Union
+import signal
+import sys
 
 
 MENU_ACTIONS = {1: "initiate_game", 2: "show_rules", 3: "show_about"}
@@ -333,9 +335,20 @@ class Game(FeedbackMixin):
                                     "get_game_level")
 
 
+def signal_handler(signal, frame):
+    """
+    Handle the default behaviour of Ctrl+C user input
+    which cause (KeyboardInterrupt) Error
+    Found on 'rtfpessoa' Github repos
+    """
+    print("\nExitting Minesweeper, click on 'Run Game' to restart again ...")
+    sys.exit(0)
+
+
 if __name__ == '__main__':
     """
     Create game instance and run the game
     """
+    signal.signal(signal.SIGINT, signal_handler)
     game = Game()
     game.run()
