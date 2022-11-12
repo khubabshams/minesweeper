@@ -6,7 +6,7 @@ import time
 
 class UtilityMixin:
 
-    def sleep(self, seconds):
+    def sleep(self, seconds: int) -> None:
         """
         Wait for a given number of seconds
         """
