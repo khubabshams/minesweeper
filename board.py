@@ -1,6 +1,6 @@
 import random as rnd
+import emoji
 from rich.table import Table
-import time
 from utility import UtilityMixin
 
 
@@ -148,7 +148,7 @@ class Board(UtilityMixin):
         Replace the content of a cell with mine emoji if it's in the mines list
         """
         if self.has_mine((row, col)):
-            self.cells[row][col] = "💥"
+            self.cells[row][col] = emoji.emojize(':bomb:')
 
     def show_mines(self) -> None:
         """
