@@ -5,13 +5,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/addons/attach/attach.js"></script>
-    <title>Python Terminal by Code Institute</title>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/addons/attach/attach.js"></script>
+    
+        <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="../assets/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="../assets/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="../assets/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../assets/favicons/site.webmanifest">
+
+    <title>Minesweeper CLI</title>
     <style>
         body {
             font-family: Arial;
+            background: url('../assets/images/game-background.jpg') no-repeat center center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         /**
@@ -19,7 +36,7 @@
         */
 
         .xterm {
-            font-feature-settings: "liga"0;
+            font-feature-settings: "liga" 0;
             position: relative;
             user-select: none;
             -ms-user-select: none;
@@ -158,12 +175,29 @@
         button {
             width: 200px;
             height: 40px;
-            background-color: #E84610;
-            border: 1px solid grey;
+            background-color: rgb(121, 2, 101);
+            border: 1px solid rgb(255, 238, 0);
             color: white;
             text-transform: uppercase;
-            margin: 10px;
-            border-radius: 8px;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: white;
+            color: rgb(121, 2, 101);
+        }
+
+        footer p {
+            text-decoration: underline;
+        }
+
+        footer a {
+            color: inherit;
+        }
+
+        footer a:hover {
+            color: rgb(121, 2, 101);
+            font-size: 120%;
         }
     </style>
 </head>
