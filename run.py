@@ -1,7 +1,6 @@
 from board import Board
 from user import User
 from utility import UtilityMixin
-import time
 from typing import Union
 import signal
 import sys
@@ -134,7 +133,7 @@ class Game(UtilityMixin):
             self.print_failure_message(
                 "Invalid input, please enter numbers only to select an item")
         failure_callback_func = getattr(self, callback_func)
-        failure_callback_func(arg) if arg else failure_callback_func()
+        return failure_callback_func(arg) if arg else failure_callback_func()
 
     def get_menu_choice(self, menu_text: str, possible_values: list,
                         callback_func: str) -> Union[int, None]:
