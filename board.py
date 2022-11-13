@@ -1,5 +1,4 @@
 import random as rnd
-import emoji
 from rich.table import Table
 from utility import UtilityMixin
 
@@ -10,7 +9,7 @@ class Board(UtilityMixin):
         """
         Preparing values of cells 2-d list
         """
-        return [[emoji.emojize(':locked:') for col in range(self.col_size)]
+        return [['?' for col in range(self.col_size)]
                 for row in range(self.row_size)]
 
     def _get_random_cors(self) -> tuple:
@@ -145,10 +144,10 @@ class Board(UtilityMixin):
 
     def _add_mine(self, row: int, col: int) -> None:
         """
-        Replace the content of a cell with mine emoji if it's in the mines list
+        Replace the content of a cell with mine '*' if it's in the mines list
         """
         if self.has_mine((row, col)):
-            self.cells[row][col] = emoji.emojize(':bomb:')
+            self.cells[row][col] = "[#fc0509]*"
 
     def show_mines(self) -> None:
         """
