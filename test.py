@@ -20,7 +20,7 @@ class TestBoard(unittest.TestCase):
         self.assertTrue(len(self.mines) == self.mines_num)
 
     def test_cells_lock(self):
-        all_cells_locked = all([all([cell == '🔒' for cell in row])
+        all_cells_locked = all([all([cell == '?' for cell in row])
                                 for row in self.cells])
         self.assertEqual(all_cells_locked, True, "Some cells left un-locked.")
 
