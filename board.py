@@ -160,7 +160,7 @@ class Board(UtilityMixin):
         """
         Draw a table of row and column based on the board dimensions
         """
-        style = "[bold][blue]"
+        style = "[bold][magenta]"
         table = self._create_table(style)
         table = self._add_rows(table, style)
         return table
