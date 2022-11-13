@@ -79,8 +79,8 @@ class Board(UtilityMixin):
         the level of danger: >= 3 Red, >=1 Orange, 0 Green
         and add the bold style
         """
-        color = "[red]" if neighbour_mines_num >= 3 else "[#f45f0e]" \
-            if neighbour_mines_num >= 1 else '[green]'
+        color = "[bright_red]" if neighbour_mines_num >= 3 \
+            else "[dark_orange3]" if neighbour_mines_num >= 1 else '[green3]'
         return f"{color}{neighbour_mines_num}"
 
     def set_neighbour_mines_num(self, cors: tuple) -> None:
@@ -147,7 +147,7 @@ class Board(UtilityMixin):
         Replace the content of a cell with mine '*' if it's in the mines list
         """
         if self.has_mine((row, col)):
-            self.cells[row][col] = "[#fc0509]*"
+            self.cells[row][col] = "[red1]*"
 
     def show_mines(self) -> None:
         """
