@@ -1,10 +1,15 @@
 <body>
     <button onclick="window.location.reload()">Run Game</button>
     <div id="terminal"></div>
-
+    
+    <footer>
+        <p>Developed by <a href="https://www.linkedin.com/in/kshamse/">Khubab
+                Shams</a></p>
+    </footer>
+    
     <script>
         var term = new Terminal({
-            cols: 121,
+            cols: 80,
             rows: 24
         });
         term.open(document.getElementById('terminal'));
