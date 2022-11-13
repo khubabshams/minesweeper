@@ -81,7 +81,7 @@ class Board(UtilityMixin):
         """
         color = "[red]" if neighbour_mines_num >= 3 else "[#f45f0e]" \
             if neighbour_mines_num >= 1 else '[green]'
-        return f"[{color}]{neighbour_mines_num}"
+        return f"{color}{neighbour_mines_num}"
 
     def set_neighbour_mines_num(self, cors: tuple) -> None:
         """
