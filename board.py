@@ -10,7 +10,7 @@ class Board(UtilityMixin):
         """
         Preparing values of cells 2-d list
         """
-        return [['🔒' for col in range(self.col_size)]
+        return [[emoji.emojize(':locked:') for col in range(self.col_size)]
                 for row in range(self.row_size)]
 
     def _get_random_cors(self) -> tuple:
