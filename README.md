@@ -1,4 +1,49 @@
-# Love Running
+<kbd>![Minesweeper](/media/logo.PNG)</kbd>
+
+Developer: [Khubab Shamsuddin](https://www.linkedin.com/in/kshamse/)
+
+Live Website: [Minesweeper](https://cli-minesweeper.herokuapp.com/)
+
+![Main Screen](/media/main-screen.PNG)
+
+
+# Table of Contents
+
+- [Table of contents](#table-of-contents)
+- [About Minesweeper](#about-minesweeper)
+- [Goals](#goals)
+  - [User's Goals](#users-goals)
+  - [Owner's Goals](#owners-goals)
+- [User Stories](#user-stories)
+    - [User's Stories](#users-stories)
+    - [Site's Owner Stories](#sites-owner-stories)
+- [Design](#design)
+  - [Flowcharts](#flowcharts)
+    - [The Game Flow](#the-game-flow)
+    - [Play Flow](#play-flow)
+- [Used Technologies](#used-technologies)
+  - [Python](#python)
+    - [Modules & Packages](#modules-and-packages)
+  - [Firestore DB](#firestore)
+  - [Other Softwares & Tools](#other-softwares-and-tools)
+- [Features](#features)
+  - [Menus](#menus)
+  - [Signup](#signup)
+  - [Login](#login)
+  - [Game Rules](#game-rules)
+  - [About Game](#about-game)
+  - [Levels](#levels)
+  - [Board](#board)
+  - [Symbols and Colors](#symbols-and-colors)
+  - [Feedback Messages](#feedback)
+- [Validation](#validation)
+- [Testing](#testing)
+  - [Manual](#manual-testing)
+  - [Automated](#automated-testing)
+- [Bugs](#interesting-bugs)
+- [Deployment](#deployment)
+- [Credits](#credits)
+
 
 In this section, you will include one or two paragraphs providing an overview of your project. Essentially, this part is your sales pitch. At this stage, you should have a name for your project so use it! Don’t introduce the project as a Portfolio project for the diploma. In this section, describe what the project hopes to accomplish, who it is intended to target and how it will be useful to the target audience. 
 
