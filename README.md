@@ -44,9 +44,23 @@ Live Website: [Minesweeper](https://cli-minesweeper.herokuapp.com/)
 - [Deployment](#deployment)
 - [Credits](#credits)
 
+
 # About Minesweeper
 
-Minesweeper is a game designed to entertain and provide for internet users. The game board is made up of many columns and rows, and the player must guess and calculate in order to reveal all cells that do not contain mines. The current game is command-line-based, which receives player-guessed cell coordination as input and checks if it has a mine or not. When all cells are revealed, the player wins; if a cell contains a mine, the player loses.
+Minesweeper is a game designed to entertain Internet users. The game board is made up of many columns and rows, and the player must guess and calculate in order to reveal all cells that do not contain mines. The current game is command-line-based, which receives player-guessed cell coordination as input and checks if it has a mine or not. When all cells are revealed, the player wins; if a cell contains a mine, the player loses.
+
+<a href="#love-running" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
+
+# Goals
+
+## User's Goal
+
+- Play an interesting logic game.
+
+## Site Owner's Goal
+
+- Build an interactive command-line version of the well-known minesweeper game.
+- The game should provide amusement and joy to attract more users.
 
 ## Features 
 
