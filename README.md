@@ -335,21 +335,21 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
 # Deployment
 
 - The site was deployed to `Heroku`. The steps to deployment are as follows:
-  - After you've signed up, navigate to the [Heroku apps page] (https://dashboard.heroku.com/apps) and click "Create New App."
+  - After you've signed up, navigate to the [Heroku apps page](https://dashboard.heroku.com/apps) and click `Create New App.`
   - Enter the application name and the region, then click on `Create App`.
-  - Once the app has been created, go to the "Settings" tab.
+  - Once the app has been created, go to the `Settings` tab.
   - In settings, click on `Reveal Config Vars` and set the case-sensitive word `CREDS` to the `KEY` field, then copy all of your credentials json file content into the `VALUE` area and click on the `Add` button.
-  - Next, select "Add buildback."Select `python` as the first buildpack and click `Save changes` then do the same for `node.js`, Following the given sequence is very important.
-  - Once the settings are complete, navigate to the "Deploy" tab.
+  - Next, select `Add buildback` Select `python` as the first buildpack and click `Save changes` then do the same for `node.js`, Following the given sequence is very important.
+  - Once the settings are complete, navigate to the `Deploy` tab.
   - Select `Github` from the `Deployment method` options.
   - Connect your `Heroku` account with `Github` and grant Heroku` the required authorization.
-  - Find the name of the "repository" that you want to deploy.
+  - Find the name of the repository that you want to deploy.
   - Click `Connect` on the wanted `repo` and select the branch from the `Choose a branch to deploy` dropdown button.
   - Choose `Automatic deploys` to automatically deploy the application whenever code has been pushed to the selected branch (You recommended having a CI service configured on the repo).
   - OR
-  - When the "Deploy Branch" button is clicked, select "Manual Deploy" to deploy the branch.
+  - When the `Deploy Branch` button is clicked, select `Manual Deploy` to deploy the branch.
   - Review the deployment debugger output if there's a deployment issue.
-  - When the deployment is complete, you'll see the message "Your app was successfully deployed," and you can open your application page by clicking the "View" button.
+  - When the deployment is complete, you'll see the message `Your app was successfully deployed` and you can open your application page by clicking the `View` button.
 
 The live link can be found here: https://cli-minesweeper.herokuapp.com/
 
