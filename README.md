@@ -13,17 +13,16 @@ Live Website: [Minesweeper](https://cli-minesweeper.herokuapp.com/)
 - [About Minesweeper](#about-minesweeper)
 - [Goals](#goals)
   - [User's Goals](#users-goals)
-  - [Owner's Goals](#owners-goals)
+  - [Site Owner's Goals](#site-owners-goals)
 - [User Stories](#user-stories)
     - [User's Stories](#users-stories)
-    - [Site's Owner Stories](#sites-owner-stories)
-- [Game Design](#flowcharts-design)
+    - [Site Owner's Stories](#site-owners-stories)
+- [Game Design](#game-design)
   - [Pseudocode](#pseudocode)
   - [Flowcharts](#flowcharts)
 - [Used Technologies](#used-technologies)
   - [Python](#python)
     - [Modules & Packages](#modules-and-packages)
-  - [Firestore DB](#firestore)
   - [Other Softwares & Tools](#other-softwares-and-tools)
 - [Features](#features)
   - [Menus](#menus)
@@ -48,20 +47,20 @@ Live Website: [Minesweeper](https://cli-minesweeper.herokuapp.com/)
 
 Minesweeper is a game designed to entertain Internet users. The game board is made up of many columns and rows, and the player must guess and calculate in order to reveal all cells that do not contain mines. The current game is command-line-based, which receives player-guessed cell coordination as input and checks if it has a mine or not. When all cells are revealed, the player wins; if a cell contains a mine, the player loses.
 
-<a href="#love-running" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
+<a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
 
 # Goals
 
-## User's Goal
+## User's Goals
 
 - Play an interesting logic game.
 
-## Site Owner's Goal
+## Site Owner's Goals
 
 - Build an interactive command-line version of the well-known minesweeper game.
 - The game should provide amusement and joy to attract more users.
 
-<a href="#love-running" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
+<a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
 
 # User Stories
 
@@ -72,13 +71,15 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
 3. I want to get clear feedback on my inputs.
 4. I want to be able to review my choices.
 
-## Site's Owner Stories
+## Site Owner's Stories
 
 5. I want the game to be simple and clear.
 6. I want the game to have a smooth and natural flow.
 7. I want new users to be able to create a new account.
 8. I want active users to be able to login to an existing account.
 9. I want players to see information about the game and its rules.
+
+<a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
 
 # Game Design
 
@@ -156,8 +157,42 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
   ![Play Process Flow](/media/play-flow.png)
 </details>
 
+<a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
 
-## Features 
+
+# Used Technologies
+
+## Python
+  - Python programming language is the main component for developing this game.
+  - Developed and tested on python version 3.8.11. 
+
+### Modules and Packages
+
+  - **Firebase Admin and Firestore**: connect Python code with the Firestore database.
+  - **Bcrypt**: secure storage and retrieval of hashed and unhashed passwords.
+  - **GetPass**: conceal the characters of passwords entered.
+  - **Rich**: build tables and print markdown-formatted strings.
+  - **Termcolor**: colour and manipulate text styles.
+  - **Unittest**: create automated test classes.
+  - **Typing union**: used to describe methods with multiple possible types of return.
+  - **Random**: generate a random number.
+  - **Time**: pause the game for a set amount of time.
+  - **Signal**: change the behaviour of the CTRL+C keyboard input. 
+
+
+## Other Softwares and Tools
+  - **Google Firestore** is used to store and get the players' account data.
+  - **Lucidchart** to design the game flowcharts.
+  - **Gitpod** and **VS Code** for code development and testing.
+  - **Heroku** for deploying the live version of this game.
+  - **Github** is used for version control.
+  - **Grammarly** and **QuillBot** to detect typos and grammatical errors.
+  - **Node.js**, **HTML**, **CSS**, and **XTERM** to create the game's infrastructure layer. 
+
+<a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
+
+
+# Features 
 
 In this section, you should go over the different parts of your project, and describe each in a sentence or so. You will need to explain what value each of the features provides for the user, focusing on who this website is for, what it is that they want to achieve and how your project is the best way to help them achieve these things.
 
@@ -175,8 +210,8 @@ In this section, you should go over the different parts of your project, and des
   - The landing includes a photograph with text overlay to allow the user to see exactly which location this site would be applicable to. 
   - This section introduces the user to Love Running with an eye catching animation to grab their attention
 
-<a href="#love-running" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
-<!-- [(![Landing Page](/media/top.png))](#love-running) -->
+<a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
+<!-- [(![Landing Page](/media/top.png))](#table-of-contents) -->
 - __Club Ethos Section__
 
   - The club ethos section will allow the user to see the benefits of joining the Love Running meetups, as well as the benefits of running overall. 
