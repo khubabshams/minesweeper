@@ -36,11 +36,11 @@ Live Website: [Minesweeper](https://cli-minesweeper.herokuapp.com/)
     - [Symbols and Colors](#symbols-and-colours)
     - [Feedback Messages](#feedback-messages)
   - [Features Left to Implement](#features-left-to-implement)
-- [Validation](#validation)
 - [Testing](#testing)
   - [Manual](#manual-testing)
   - [Automated](#automated-testing)
-- [Bugs](#interesting-bugs)
+  - [Validator](#validator-testing)
+  - [Bugs](#interesting-bugs)
 - [Deployment](#deployment)
 - [Credits](#credits)
 
@@ -180,6 +180,7 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
   - **Random**: generate a random number.
   - **Time**: pause the game for a set amount of time.
   - **Signal**: change the behaviour of the CTRL+C keyboard input. 
+  - **pycodestyle**: used to validate Python code and ensure that it adheres to conventions. 
 
 
 ## Other Softwares and Tools
@@ -198,7 +199,7 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
 
 ### Existing Features
 
-- __Menus__
+#### Menus
 
   - Game menus will allow the user to easily navigate all of the game's features by simply entering the number of the option he wants to select.
   - *Covered User stories: 5,6*
@@ -208,7 +209,7 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
     </details>
 
 
-- __Signup__
+#### Signup
 
   - To play the game, first-time users must sign up by providing their name, email address, and password, as well as a confirmation password.
   - *Covered User stories: 7*
@@ -219,7 +220,7 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
     </details>
 
 
-- __Login__
+#### Login
 
   - Existing users will be able to use their email and password to get into the game.
   - Authentication process is done on each login to check if the user has the right to access the game.
@@ -232,7 +233,7 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
     </details>
 
 
-- __Game Rules__
+#### Game Rules
 
   - A text block that explains how the game works and how to play it to the user.
   - *Covered User stories: 1, 9*
@@ -243,7 +244,7 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
     </details>
 
 
-- __About Game__
+#### About Game
 
   - A text block containing information about the game and the developer.
   - *Covered User stories: 9*
@@ -254,7 +255,7 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
     </details>
 
 
-- __Levels__
+#### Levels
 
   - level options are available to provide various difficulty levels.
   - Each level has its own board dimensions (rows and columns) and specific number of mines.
@@ -266,7 +267,8 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
     </details>
 
 
-- __Board__
+#### Board
+
   - Game board is shown in a coloured table style, the board mines' positions generated randomly.
   - Assists the user in determining mine position by providing the number of the neighbouring mine.
   - When the player loses, a real board with mines is displayed to inform the user of his incorrect cell choice.
@@ -278,7 +280,8 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
     </details>
 
 
-- __Symbols and Colours__
+#### Symbols and Colours
+
   - Unrevealed cells' content is (?) to indicate that it's available for the user's choice.
   - Mines are in the form of red starred (*) shapes.
   - The colour of neighbouring mine cells indicates their danger level (red indicates very dangerous, orange indicates dangerous, and green indicates no mines).
@@ -289,7 +292,8 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
     </details>
 
 
-- __Feedback Messages__
+ #### Feedback Messages
+
   - Invalid user input triggers an appropriate message depending on the requested data.
   - Each user's coordination input is shown on the terminal to help the player track his moves.
   - To make it easier for the user to capture success messages, error messages are printed in red and success messages in green.
@@ -314,36 +318,42 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
 
 # Testing 
 
-In this section, you need to convince the assessor that you have conducted enough testing to legitimately believe that the site works well. Essentially, in this part you will want to go over all of your project’s features and ensure that they all work as intended, with the project providing an easy and straightforward way for the users to achieve their goals.
+## Manual Testing
 
-In addition, you should mention in this section how your project looks and works on different browsers and screen sizes.
-
-You should also mention in this section any interesting bugs or problems you discovered during your testing, even if you haven't addressed them yet.
-
-If this section grows too long, you may want to split it off into a separate file and link to it from here.
-
+## Automated Testing
 
 ## Validator Testing 
 
-- HTML
-  - No errors were returned when passing through the official [W3C validator](https://validator.w3.org/nu/?doc=https%3A%2F%2Fcode-institute-org.github.io%2Flove-running-2.0%2Findex.html)
-- CSS
-  - No errors were found when passing through the official [(Jigsaw) validator](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fvalidator.w3.org%2Fnu%2F%3Fdoc%3Dhttps%253A%252F%252Fcode-institute-org.github.io%252Flove-running-2.0%252Findex.html&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en#css)
+- The game code has passed the `pycodestyle` linter validations with no errors or warnings shown.
 
-## Unfixed Bugs
+## Interesting Bugs
 
-You will need to mention unfixed bugs and why they were not fixed. This section should include shortcomings of the frameworks or technologies used. Although time can be a big variable to consider, paucity of time and difficulty understanding implementation is not a valid reason to leave bugs unfixed. 
+
+<a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
+
 
 # Deployment
 
-This section should describe the process you went through to deploy the project to a hosting platform (e.g. GitHub) 
+- The site was deployed to `Heroku`. The steps to deployment are as follows:
+  - After you've signed up, navigate to the [Heroku apps page] (https://dashboard.heroku.com/apps) and click "Create New App."
+  - Enter the application name and the region, then click on `Create App`.
+  - Once the app has been created, go to the "Settings" tab.
+  - In settings, click on `Reveal Config Vars` and set the case-sensitive word `CREDS` to the `KEY` field, then copy all of your credentials json file content into the `VALUE` area and click on the `Add` button.
+  - Next, select "Add buildback."Select `python` as the first buildpack and click `Save changes` then do the same for `node.js`, Following the given sequence is very important.
+  - Once the settings are complete, navigate to the "Deploy" tab.
+  - Select `Github` from the `Deployment method` options.
+  - Connect your `Heroku` account with `Github` and grant Heroku` the required authorization.
+  - Find the name of the "repository" that you want to deploy.
+  - Click `Connect` on the wanted `repo` and select the branch from the `Choose a branch to deploy` dropdown button.
+  - Choose `Automatic deploys` to automatically deploy the application whenever code has been pushed to the selected branch (You recommended having a CI service configured on the repo).
+  - OR
+  - When the "Deploy Branch" button is clicked, select "Manual Deploy" to deploy the branch.
+  - Review the deployment debugger output if there's a deployment issue.
+  - When the deployment is complete, you'll see the message "Your app was successfully deployed," and you can open your application page by clicking the "View" button.
 
-- The site was deployed to GitHub pages. The steps to deploy are as follows: 
-  - In the GitHub repository, navigate to the Settings tab 
-  - From the source section drop-down menu, select the Master Branch
-  - Once the master branch has been selected, the page will be automatically refreshed with a detailed ribbon display to indicate the successful deployment. 
+The live link can be found here: https://cli-minesweeper.herokuapp.com/
 
-The live link can be found here - https://code-institute-org.github.io/love-running-2.0/index.html 
+<a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
 
 
 # Credits 
