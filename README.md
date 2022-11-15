@@ -17,10 +17,9 @@ Live Website: [Minesweeper](https://cli-minesweeper.herokuapp.com/)
 - [User Stories](#user-stories)
     - [User's Stories](#users-stories)
     - [Site's Owner Stories](#sites-owner-stories)
-- [Design](#design)
+- [Game Design](#flowcharts-design)
+  - [Pseudocode](#pseudocode)
   - [Flowcharts](#flowcharts)
-    - [The Game Flow](#the-game-flow)
-    - [Play Flow](#play-flow)
 - [Used Technologies](#used-technologies)
   - [Python](#python)
     - [Modules & Packages](#modules-and-packages)
@@ -61,6 +60,102 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
 
 - Build an interactive command-line version of the well-known minesweeper game.
 - The game should provide amusement and joy to attract more users.
+
+<a href="#love-running" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
+
+# User Stories
+
+## User's Stories
+
+1. I want to understand the game's rules.
+2. I want to be able to control the game's difficulty.
+3. I want to get clear feedback on my inputs.
+4. I want to be able to review my choices.
+
+## Site's Owner Stories
+
+5. I want the game to be simple and clear.
+6. I want the game to have a smooth and natural flow.
+7. I want new users to be able to create a new account.
+8. I want active users to be able to login to an existing account.
+9. I want players to see information about the game and its rules.
+
+# Game Design
+
+## Pseudocode
+
+<details>
+  <summary>The Process Steps</summary>
+
+```
+1. Display the greeting message.
+
+2. Inquiring about the user's account and providing the options "log in" and "sign up."
+    - (2.1) If the user enters "1" for login, he will be asked to enter his email and password.
+    - (2.2) If the user enters "2" signup, he will be asked to enter his name, email address, and password with confirmation, and a record will be created as a result.
+    - (2.3) The authentication process runs after both of the above options to make sure the user has an account; if authentication fails, inform the user of the wrong email or password and go to "Step 2.1. Login."
+
+3. Display the main menu and await the user's choice (1. start, 2. rules, 3. about).
+
+4. If the user types "1," proceed to "Step 7: Level Selection" to begin the game.
+
+5. Display the game rules and return to "Step 3: Main Menu" if the user enters "2."
+
+6. Display game information and return to "Step 3: Main Menu" if the user enters "3."
+
+7. Display the levels menu and wait for the user to select (1. easy, 2. medium, or 3. difficult).
+
+8. If the user enters "1," proceed to "Step 11: Start the Game" in simple mode.
+
+9. If the user enters "2," proceed to "Step 11: Start the Game" mode.
+
+10. If the user enters "3," proceed to "Step 11: Start the Game" in Hard Mode.
+
+11. Start the game by constructing the board with a specified number of rows and columns, as well as the number of randomly distributed mines based on the level selected.
+
+12. Begin a round by displaying the board.
+
+13. Ask the player to enter the coordination (row and column) of his chosen cell.
+
+14. Display the players' choice.
+
+15. If the chosen cell has been revealed before, inform the user and proceed to "Step 13: Ask for a Guess."
+
+16. Check if the cell contains mine if it's going to "Step 20: End Game."
+
+17. Display the board with the chosen cell containing the number of its neighbouring mines.
+
+18. Check to see if all cells have been explored before proceeding to "Step 20: End Game."
+
+19. Proceed to "Step 12: New Round."
+
+20. If a mine is discovered, show the losing message and the real board; otherwise, show the winning message.
+
+21. Show the "play again" menu (1. yes, 2. no).
+
+22. Proceed to "Step 11: Start the Game" if the user enters "1."
+
+23. Proceed to "Step 3: Main Menu" if the user enters "2."
+
+* Any incorrect selection will result in a feedback message and a new request for the user's selection.
+```
+</details>
+
+
+## Flowcharts
+
+<details>
+  <summary>The Game Flow</summary>
+
+  ![The Whole Game Flow](/media/game-flow.png)
+</details>
+
+<details>
+  <summary>Play Flow</summary>
+
+  ![Play Process Flow](/media/play-flow.png)
+</details>
+
 
 ## Features 
 
