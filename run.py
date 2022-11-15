@@ -61,17 +61,22 @@ class Game(UtilityMixin):
         """
         Get 'rules' text
         """
-        return "Rules:\nChoosing a square which doesn't have a mine reveals"
-        "the number of neighbouring squares containing mines. "
-        "By a process of deduction, elimination and guesswork, "
-        "this information can be used to work out where all the mines are."
+        return """
+        Rules:
+        Choosing a square which doesn't have a mine reveals
+        the number of neighbouring squares containing mines.
+        By a process of deduction, elimination and guesswork,
+        this information can be used to work out where all the mines are.
+        """
 
     def _get_about(self) -> str:
         """
         Get 'about' text
         """
-        return "Minesweeper:\na Command line version of Minesweeper game "
-        "developed by Khubab Shams."
+        return """
+        Minesweeper:
+        a Command line version of Minesweeper game developed by Khubab Shams.
+        """
 
     def _get_level_menu(self) -> str:
         """
