@@ -20,6 +20,7 @@ Live Website: [Minesweeper](https://cli-minesweeper.herokuapp.com/)
 - [Game Design](#game-design)
   - [Pseudocode](#pseudocode)
   - [Flowcharts](#flowcharts)
+  - [Data Models](#data-models)
 - [Used Technologies](#used-technologies)
   - [Python](#python)
     - [Modules & Packages](#modules-and-packages)
@@ -161,26 +162,40 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
 
 <a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
 
+## Data Models
+
+- The game code was written following object-oriented programming principles.
+
+  <details>
+    <summary>Models Details</summary>
+
+    - **Classes** Four classes have been written: (Board, User, Game, and UtilityMixin), the last one is a mixin that contains functions such as styled print functions. All other classes inherited the mixin in order to reuse its common functionalities.
+    - **Unit Tests** Each Python class in the above list has its own unit testing class to test its main methods.
+  </details>
+
 
 # Used Technologies
 
 ## Python
-  - Python programming language is the main component for developing this game.
-  - Developed and tested on python version 3.8.11. 
+  - Python programming language is the main component for developing this game.
+  - Developed and tested on python version 3.8.11.
 
 ### Modules and Packages
 
-  - **Firebase Admin and Firestore**: connect Python code with the Firestore database.
-  - **Bcrypt**: secure storage and retrieval of hashed and unhashed passwords.
-  - **GetPass**: conceal the characters of passwords entered.
-  - **Rich**: build tables and print markdown-formatted strings.
-  - **Termcolor**: colour and manipulate text styles.
-  - **Unittest**: create automated test classes.
-  - **Typing union**: used to describe methods with multiple possible types of return.
-  - **Random**: generate a random number.
-  - **Time**: pause the game for a set amount of time.
-  - **Signal**: change the behaviour of the CTRL+C keyboard input. 
-  - **pycodestyle**: used to validate Python code and ensure that it adheres to conventions. 
+__Built-in__
+  - **Random** generate a random number.
+  - **Time** pauses the game for a set amount of time.
+  - **Signal** change the behaviour of the CTRL+C keyboard input. 
+  - **Rich** build tables and print markdown-formatted strings.
+  - **Unittest** create automated test classes.
+  - **Typing union** describes methods with multiple possible types of return.
+
+__3rd Party__
+  - **Firebase Admin and Firestore**: I used these to connect Python code with the Firestore database.
+  - **Bcrypt**: I used Bcrypt to store and retrieve hashed and unhashed passwords securely.
+  - **GetPass**: I used it to conceal the characters of passwords entered by the user.
+  - **Termcolor**: I used this to colour and change the style of text.
+  - **pycodestyle**: I used it to validate Python code and ensure that it adhered to conventions.
 
 
 ## Other Softwares and Tools
@@ -322,9 +337,30 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
 
 ## Automated Testing
 
+- Unit test classes have been written to test the functionalities of the Minesweeper game.
+- The CLI command to run the tests with the print statements buffered is:
+
+  `python3 test.py -b`
+
+- Test results:
+  <details>
+    <summary>All tests passed successfully</summary>
+
+    ![Unittests Result](/media/unittests-result.PNG)
+  </details>
+
+
 ## Validator Testing 
 
+
 - The game code has passed the `pycodestyle` linter validations with no errors or warnings shown.
+- I applied a filter `**/*.py` on VSCode to show only problems within all Python files.
+- Validatior Results:
+  <details>
+    <summary>No problem was detected by the linter</summary>
+
+    ![Pycodestyle Result](/media/pycodestyle-linter-result.PNG)
+  </details>
 
 ## Interesting Bugs
 
@@ -405,13 +441,13 @@ The live link can be found here: https://cli-minesweeper.herokuapp.com/
 
 - Email validation code using regular expressions is taken from this [Rohit Gupta](https://www.c-sharpcorner.com/article/how-to-validate-an-email-address-in-python/) post.
 
-- Based on [IDOWU OMISOLA] (https://www.makeuseof.com/encrypt-password-in-python-bcrypt/), Bcrypt is used for password hashing and hashed password comparison.
+- Based on [IDOWU OMISOLA](https://www.makeuseof.com/encrypt-password-in-python-bcrypt/), Bcrypt is used for password hashing and hashed password comparison.
 
 - Writing unit tests followed tutorials posted by [Bala Priya C](https://www.freecodecamp.org/news/how-to-write-unit-tests-for-python-functions/) and the [geertjanvdk's](https://stackoverflow.com/questions/17657543/python-unittest-setup-function) Stackoverflow solution.
 
 - Mocking user input inside a unit test is an idea from [Pavel Vergeev](https://dev.to/vergeev/how-to-test-input-processing-in-python-3) blog.
 
-- Writing typing hints for a function with multiple possible types of return is taken from [Bhargav Rao's] (https://stackoverflow.com/questions/33945261/how-to-specify-multiple-return-types-using-type-hints) Stackoverflow solution.
+- Writing typing hints for a function with multiple possible types of return is taken from [Bhargav Rao's](https://stackoverflow.com/questions/33945261/how-to-specify-multiple-return-types-using-type-hints) Stackoverflow solution.
 
 - Rich colours used in this game are brought from the [Colours List](https://rich.readthedocs.io/en/stable/appendix/colors.html).
 
