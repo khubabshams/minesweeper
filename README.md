@@ -17,6 +17,7 @@ Live Website: [Minesweeper](https://cli-minesweeper.herokuapp.com/)
 - [User Stories](#user-stories)
     - [User's Stories](#users-stories)
     - [Site Owner's Stories](#site-owners-stories)
+- [User Manual](#user-manual)
 - [Game Design](#game-design)
   - [Pseudocode](#pseudocode)
   - [Flowcharts](#flowcharts)
@@ -57,11 +58,14 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
 ## User's Goals
 
 - Play an interesting logic game.
+- Understands how the game works.
+- Be able login with a registered account.
 
 ## Site Owner's Goals
 
 - Build an interactive command-line version of the well-known minesweeper game.
 - The game should provide amusement and joy to attract more users.
+- Promote owner's information and the game description.
 
 <a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
 
@@ -81,6 +85,72 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
 7. I want new users to be able to create a new account.
 8. I want active users to be able to login to an existing account.
 9. I want players to see information about the game and its rules.
+
+<a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
+
+# User Manual
+
+<details>
+  <summary>Click here to see instructions.</summary>
+
+__Account Menu__
+  
+When the game starts and after the greeting message, the account menu (have account?) appears with two options:
+1. Yes, we will ask you to sign in
+2. No, you can signup to have one
+Operation: Enter the number of the selected option.
+
+__Login__
+
+When the user selects the first option in the account menu, login data will be requested.
+Operation: Enter email, then password.
+A message will show up to inform the user of the login process status; if login fails, the user will be asked to enter his credentials again.
+
+__Sign Up__
+
+If the user selects the second choice of the account menu, he will be asked to fill out signup data.
+Operation: Enter name, email, password, and confirms his password.
+Name, email, and password must start with a letter, not a number.
+Email must be formatted as email@provider.com, net, etc.
+Passwords must be at least eight characters long.
+
+__Main Menu__
+
+Once user logged in, main menu appears with three options shown:
+1. Start Game
+2. Rules
+3. About
+Operation: Enter a number in the options range.
+When the user selects Rules or About, a related text block will be shown, and after a while, the main menu will appear again.
+
+__Level Menu__
+
+When the user selects the first option in the main menu, he will be asked to choose the level of the game.
+1. Easy 3x3 (3 Mines)
+2. Medium 4x4 (6 Mines)
+3. Hard 6x6 (16 Mines)
+Each level has a different board size and number of mines, as mentioned.
+
+__Game Round__
+
+Once the round has begun, the board will be displayed, followed by a request for the row and column of the user's guess.
+Operation: Enter a row number from zero to the maximum row number on the board, then enter a column number (the same rule applies).
+User mustn't enter a cell position which entered before.
+If selected cell has a mine user will be informed and game will be ended, otherwise the board will be shown and neighbouring mines number of the selected cell will appear inside it.
+Round will be repeated until the player reveal all cells successfully.
+
+__Play Again Menu__
+
+When the game ends, the player will be asked if he would like to play again.
+1. Yes
+2. No
+Operation: Enter the selected option number.
+If you answer yes, a game of the same level will begin; otherwise, the main menu will appear.
+
+__Note__
+
+At any time the user enters an invalid input or an unfound option number, feedback will be prompted and the user will be requested to repeat the operation.
+</details>
 
 <a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
 
@@ -167,7 +237,7 @@ Minesweeper is a game designed to entertain Internet users. The game board is ma
 - The game code was written following object-oriented programming principles.
 
   <details>
-    <summary>Models Details</summary>
+    <summary>Data Models Details</summary>
 
     - **Classes** Four classes have been written: (Board, User, Game, and UtilityMixin), the last one is a mixin that contains functions such as styled print functions. All other classes inherited the mixin in order to reuse its common functionalities.
     - **Unit Tests** Each Python class in the above list has its own unit testing class to test its main methods.
