@@ -537,45 +537,61 @@ Inside the condition
 ## How to Deploy
 
 - The site was deployed to `Heroku`. The steps to deployment are as follows:
-  - After you've signed up, navigate to the [Heroku apps page](https://dashboard.heroku.com/apps) and click `Create New App.`
-  - Enter the application name and the region, then click on `Create App`.
-  - Once the app has been created, go to the `Settings` tab.
-  - In settings, click on `Reveal Config Vars` and set the case-sensitive word `CREDS` to the `KEY` field, then copy all of your credentials json file content into the `VALUE` area and click on the `Add` button.
-  - Next, select `Add buildback` Select `python` as the first buildpack and click `Save changes` then do the same for `node.js`, Following the given sequence is very important.
-  - Once the settings are complete, navigate to the `Deploy` tab.
-  - Select `Github` from the `Deployment method` options.
-  - Connect your `Heroku` account with `Github` and grant Heroku` the required authorization.
-  - Find the name of the repository that you want to deploy.
-  - Click `Connect` on the wanted `repo` and select the branch from the `Choose a branch to deploy` dropdown button.
-  - Choose `Automatic deploys` to automatically deploy the application whenever code has been pushed to the selected branch (You recommended having a CI service configured on the repo).
-  - OR
-  - When the `Deploy Branch` button is clicked, select `Manual Deploy` to deploy the branch.
-  - Review the deployment debugger output if there's a deployment issue.
-  - When the deployment is complete, you'll see the message `Your app was successfully deployed` and you can open your application page by clicking the `View` button.
+  <details>
+    <summary>Click here to see related deployment instructions</summary>
 
-- The live link can be found here: https://cli-minesweeper.herokuapp.com/
+    - After you've signed up, navigate to the [Heroku apps page](https://dashboard.heroku.com/apps) and click `Create New App.`
+    - Enter the application name and the region, then click on `Create App`.
+    - Once the app has been created, go to the `Settings` tab.
+    - In settings, click on `Reveal Config Vars` and set the case-sensitive word `CREDS` to the `KEY` field, then copy all of your credentials json file content into the `VALUE` area and click on the `Add` button.
+    - Next, select `Add buildback` Select `python` as the first buildpack and click `Save changes` then do the same for `node.js`, Following the given sequence is very important.
+    - Once the settings are complete, navigate to the `Deploy` tab.
+    - Select `Github` from the `Deployment method` options.
+    - Connect your `Heroku` account with `Github` and grant Heroku` the required authorization.
+    - Find the name of the repository that you want to deploy.
+    - Click `Connect` on the wanted `repo` and select the branch from the `Choose a branch to deploy` dropdown button.
+    - Choose `Automatic deploys` to automatically deploy the application whenever code has been pushed to the selected branch (You recommended having a CI service configured on the repo).
+    - OR
+    - When the `Deploy Branch` button is clicked, select `Manual Deploy` to deploy the branch.
+    - Review the deployment debugger output if there's a deployment issue.
+    - When the deployment is complete, you'll see the message `Your app was successfully deployed` and you can open your application page by clicking the `View` button.
+
+    
+    - The live link can be found here: https://cli-minesweeper.herokuapp.com/
+
+  </details>
+
 
 ## How to Make a Local Clone
 
 - To clone this repository to your local machine:
-  - From [Minesweeper Github](https://github.com/kshamse/minesweeper) click on `<> Code` drop-down button and select the suitable clone option.
-  - Click on the `HTTPS` or `SSH` (requires an SSH key to be configured on your machine) tab and copy the URL.
-  - Open your terminal or `Git` bash window and change the directory to where you want to clone.
-  - Enter the following command, but don't forget to replace the `<copied URL>`:
 
-    `git clone <copied URL>`
-  
-  - The same-named directory will be downloaded to the clone path.
+  <details>
+    <summary>Click to see related deployment instructions</summary>
 
+    - From [Minesweeper Github](https://github.com/kshamse/minesweeper) click on `<> Code` drop-down button and select the suitable clone option.
+    - Click on the `HTTPS` or `SSH` (requires an SSH key to be configured on your machine) tab and copy the URL.
+    - Open your terminal or `Git` bash window and change the directory to where you want to clone.
+    - Enter the following command, but don't forget to replace the `<copied URL>`:
 
-## How to Fork this Repo
+      `git clone <copied URL>`
+    
+    - The same-named directory will be downloaded to the clone path.
+  </details>
+
+## How to Fork this Repository
 
 - To fork this repository, please follow the below steps:
-  - If you're not seeing this on Github`, click on [this link](https://github.com/kshamse/minesweeper) to open up the repository.
-  - On the top right side of this page, click on `Fork`.
-  - Change the forked repository if you want to, and you can add a description as well.
-  - Leave the branch option `Copy the main branch only` checked.
-  - Click on `Create Fork` to complete forking.
+
+  <details>
+    <summary>Click to see related deployment instructions</summary>
+
+    - If you're not seeing this on Github`, click on [this link](https://github.com/kshamse/minesweeper) to open up the repository.
+    - On the top right side of this page, click on `Fork`.
+    - Change the forked repository if you want to, and you can add a description as well.
+    - Leave the branch option `Copy the main branch only` checked.
+    - Click on `Create Fork` to complete forking.
+  </details>
 
 <a href="#table-of-contents" title="Back to top"><img src="media/top.png" width="30" height="30"></a>
 
