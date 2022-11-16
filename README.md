@@ -405,6 +405,69 @@ __3rd Party__
 
 ## Manual Testing
 
+  <details>
+    <summary>User Stories Testing</summary>
+
+  1. I want to understand the game's rules
+  
+  | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+  | ------------- | ----------------------------- | ---------------------------- | ----------------- |
+  | Main menu -> Rules | Select option 2 | The rules of the game are presented to the user | Performs as expected |
+
+
+  2. I want to be able to control the game's difficulty.
+  
+  | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+  | ------------- | ----------------------------- | ---------------------------- | ----------------- |
+  | Main Menu -> Start Game| Select option 1 | The user will be asked to select the game level | Performs as expected |
+
+  3. I want to get clear feedback on my inputs.
+
+  | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+  | ------------- | ----------------------------- | ---------------------------- | ----------------- |
+  | Across the game | Valid/ invalid input | The user will see the response to his input, whether it's a message or a menu | Performs as expected |
+
+  4. I want to be able to review my choices.
+
+  | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+  | ------------- | ----------------------------- | ---------------------------- | ----------------- |
+  | Across the game | Valid/ invalid input | The user will be able to scroll and review his previous options | Performs as expected |
+
+  5. I want the game to be simple and clear.
+  
+  | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+  | ------------- | ----------------------------- | ---------------------------- | ----------------- |
+  | Menus | Select option number | The user will be asked to enter only selected option's number | Performs as expected |
+  | Board | - | The text is coloured and symbols are used to make the data on the board easier to read | Performs as expected |
+  
+  6. I want the game to have a smooth and natural flow.
+
+  | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+  | ------------- | ----------------------------- | ---------------------------- | ----------------- |
+  | Across the game | - | The user is guided through simple instructions and nested options in a circular motion | Performs as expected |
+
+  7. I want new users to be able to create a new account.
+  
+  | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+  | ------------- | ----------------------------- | ---------------------------- | ----------------- |
+  | Account Menu -> No (Signup) | Select option 2 | Users are able to signup using un-registered emails | Performs as expected |
+
+  8. I want active users to be able to login to an existing account.
+  
+  | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+  | ------------- | ----------------------------- | ---------------------------- | ----------------- |
+  | Account Menu -> Yes (Login) | Select option 1 | Users can log in using their email addresses and passwords | Performs as expected |
+
+  9. I want players to see information about the game and its rules.
+
+  | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+  | ------------- | ----------------------------- | ---------------------------- | ----------------- |
+  | Main Menu -> Rules | Select option 2 | Users will see the game rules | Performs as expected |
+  | Main Menu -> About | Select option 3 | Users will see information about the game and the developer | Performs as expected |
+
+
+  </details>
+
 ## Automated Testing
 
 - Unit test classes have been written to test the functionalities of the Minesweeper game.
@@ -421,7 +484,6 @@ __3rd Party__
 
 
 ## Validator Testing 
-
 
 - The game code has passed the `pycodestyle` linter validations with no errors or warnings shown.
 - I applied a filter `**/*.py` on VSCode to show only problems within all Python files.
@@ -452,7 +514,6 @@ With
 ```game = Game() game.run()```
 Inside the condition
 `if __name__ == '__main__':`.
-
 
 
 ### Rich Not Found 
